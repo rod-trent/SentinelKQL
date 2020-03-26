@@ -1,0 +1,3 @@
+HuntingBookmark
+| sort by CreatedBy
+| project BookmarkName , CreatedBy 

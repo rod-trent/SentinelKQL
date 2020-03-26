@@ -1,0 +1,20 @@
+let Events=datatable (SessionId:int, TimeGenerated:datetime, Event:string)
+[1, datetime(2018-01-01 12:30:00),"Start",
+1, datetime(2018-01-01 13:30:00),"Stop",
+2, datetime(2018-01-02 12:30:00),"Start",
+2, datetime(2018-01-03 13:30:00),"Stop",
+3, datetime(2018-01-01 12:30:00),"Start",
+3, datetime(2018-01-02 12:45:00),"Stop",
+4, datetime(2018-03-03 11:30:00),"Start",
+4, datetime(2018-03-03 12:30:00),"Stop",
+5, datetime(2018-03-03 13:30:00),"Start"
+];
+Events
+| where Event == "Start"
+| project Event, SessionId, StartTime=TimeGenerated
+| join kind=leftouter (Events 
+        | where Event =="Stop"
+        | project EventRight=Event, SessionId, StopTime=iif(isempty(TimeGenerated),datetime(null),TimeGenerated))
+    on SessionId
+| project SessionId, StartTime, StopTime, Duration = StopTime - StartTime
+| where isnull(StopTime)

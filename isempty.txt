@@ -1,0 +1,3 @@
+SecurityAlert
+| where isempty(ProviderName) 
+| project AlertName, SourceComputerId,  ProviderName 

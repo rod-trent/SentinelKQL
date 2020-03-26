@@ -1,0 +1,20 @@
+requests
+| serialize 
+| extend RequestId = toguid(customDimensions.RequestId)
+| project-away resultCode, id, itemType, operation_Name, client_Type, client_IP, operation_SyntheticSource, appId, itemId, itemCount, source, url, performanceBucket 
+| sort by RequestId, timestamp desc
+| extend rn = row_number()
+| extend rncr = row_number(1, prev(RequestId,1,0) != RequestId) 
+| extend previousTimestamp = iif(prev(RequestId,1,0) != RequestId, timestamp, prev(timestamp,1,0)) 
+| extend deltaInMin = datetime_diff('minute', previousTimestamp, timestamp)
+| project rncr, timestamp, RequestId, name, success, deltaInMin, duration, customDimensions, operation_Id, operation_ParentId, cloud_RoleInstance, appName
+ 
+let SampleData = datatable (user:string, rowValue: int) ["A",5,"B",12,"B",15,"A",3,"A",9,"A",19,"B",7];
+SampleData 
+| serialize
+| extend rowNumber = row_number()
+| extend rowNumberCurrentUser = row_number(1, prev(user,1,0) != user) 
+| extend previousValue = strcat("Previous value was ", prev(rowValue,1,0))
+| extend nextValue = strcat("Next value was ", next(rowNumber,1,0))
+| extend runningTotal = row_cumsum(rowValue)
+| project rowNumber, rowNumberCurrentUser, user, rowValue, previousValue, nextValue, runningTotal 

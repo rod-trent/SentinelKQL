@@ -1,0 +1,3 @@
+union Update, workspace("1stLAWorkspace").Update, workspace("2ndLAWorkspace").Update
+| where TimeGenerated >= ago(1h)
+| where UpdateState == "Needed"

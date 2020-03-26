@@ -1,0 +1,5 @@
+let numdays=3;
+let newnumdays=toscalar(numdays*3);
+SecurityAlert
+| where DisplayName contains "svchost" 
+| project AlertName , newnumdays

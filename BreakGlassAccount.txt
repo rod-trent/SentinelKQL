@@ -1,0 +1,2 @@
+SigninLogs
+| where OperationName == "Sign-in activity" and UserPrincipalName == "youremergencyaccount@domain.com"

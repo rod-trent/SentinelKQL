@@ -1,0 +1,14 @@
+let operatorUPN = "user@domain.com";
+let lookback = 2d;
+AuditLogs
+| where TimeGenerated > ago(lookback)
+| where LoggedByService == "Core Directory" and OperationName == "Update policy"
+| where InitiatedBy has operatorUPN
+| extend initator = tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName) 
+| extend policyName = tostring(TargetResources[0].displayName)
+| extend changes = TargetResources[0].modifiedProperties
+| project TimeGenerated, initator, policyName, changes
+| mvexpand changes
+| evaluate bag_unpack(changes)
+| where newValue <> "\"\"" 
+| sort by TimeGenerated, initator, policyName

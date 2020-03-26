@@ -1,0 +1,48 @@
+SigninLogs
+| where UserPrincipalName == "kkilty@microsoft.com"
+| extend ClientAppUsed = iff(isempty(ClientAppUsed) == true, "Unknown", ClientAppUsed) 
+| extend IsLegacyAuth = 
+case(ClientAppUsed contains "Browser", "No", 
+ClientAppUsed contains "Mobile Apps and Desktop clients", "No",
+ClientAppUsed contains "Exchange ActiveSync", "No",
+ClientAppUsed contains "Other clients", "Yes", "Unknown") 
+| extend errorCode = toint(Status.errorCode) 
+| extend SigninStatus = 
+case(errorCode == 0, "Success", 
+errorCode == 50058, "Interrupt",
+errorCode == 50140, "Interrupt",
+errorCode == 51006, "Interrupt",
+errorCode == 50059, "Interrupt",
+errorCode == 65001, "Interrupt",
+errorCode == 52004, "Interrupt",
+errorCode == 50055, "Interrupt",
+errorCode == 50144, "Interrupt",
+errorCode == 50072, "Interrupt",
+errorCode == 50074, "Interrupt",
+errorCode == 16000, "Interrupt",
+errorCode == 16001, "Interrupt",
+errorCode == 16003, "Interrupt",
+errorCode == 50127, "Interrupt",
+errorCode == 50125, "Interrupt",
+errorCode == 50129, "Interrupt",
+errorCode == 50143, "Interrupt",
+errorCode == 81010, "Interrupt",
+errorCode == 81014, "Interrupt",
+errorCode == 81012 ,"Interrupt", 
+"Failure") 
+| extend StatusReason = tostring(Status.failureReason)
+| extend DeviceOS = DeviceDetail.operatingSystem
+| extend DeviceBrowser = extract("([a-zA-Z]+)", 1, tostring(DeviceDetail.browser))
+| extend Country = tostring(LocationDetails.countryOrRegion)
+| extend State = tostring(LocationDetails.state)
+| extend City = tostring(LocationDetails.city)
+| extend conditionalAccessStatusDesc = 
+case(ConditionalAccessStatus == 0, "Success", 
+ConditionalAccessStatus == 1, "Failure",
+ConditionalAccessStatus == 2, "Not Applied",
+ConditionalAccessStatus == "", "Not Applied", 
+"Unknown")
+| project CreatedDateTime, IsLegacyAuth, Id, CorrelationId, ClientAppUsed, AppDisplayName, AppId, UserDisplayName, 
+UserPrincipalName, UserId, IPAddress, Country, State, City, SigninStatus, StatusReason,DeviceOS,
+DeviceBrowser, conditionalAccessStatusDesc, tostring(ConditionalAccessPolicies)
+| sort by CreatedDateTime desc

@@ -1,0 +1,22 @@
+let SampleUserData=datatable (UserId:int, OperationDate:datetime)
+[1, datetime(2018-01-01 12:30:00),
+1, datetime(2018-01-01 13:30:00),
+2, datetime(2018-01-02 12:30:00),
+2, datetime(2018-01-03 13:30:00),
+3, datetime(2018-01-02 12:30:00),
+3, datetime(2018-01-01 12:30:00),
+3, datetime(2018-02-02 13:30:00),
+1, datetime(2018-02-02 12:30:00),
+1, datetime(2018-02-03 12:30:00),
+3, datetime(2018-03-01 12:30:00),
+3, datetime(2018-03-02 12:30:00),
+2, datetime(2018-03-02 12:30:00),
+1, datetime(2018-03-03 11:30:00),
+1, datetime(2018-03-03 12:30:00),
+1, datetime(2018-03-03 13:30:00)
+];
+let SampleUserData2 =
+SampleUserData
+| extend MonthNum = datetime_part("Month", OperationDate);
+SampleUserData2
+| top-nested toscalar(SampleUserData2 | summarize dcount(MonthNum)) of MonthNum by max(1), top-nested 2 of UserId by count()

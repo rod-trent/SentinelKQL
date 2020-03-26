@@ -1,0 +1,7 @@
+let AuditLogsDEV = workspace("9b5dc943-9550-4b95-ab2d-0f1c898956da").AuditLogs;
+let start = ago(24h); 
+AuditLogsDEV
+| where TimeGenerated > start
+| where OperationName == "Add group"
+| project flatten = tostring(TargetResources)
+| where flatten contains "Unified"

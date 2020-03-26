@@ -1,0 +1,3 @@
+AzureActivity
+| where OperationName == "Update Data Connectors" and ActivityStatus == "Succeeded"
+| project Caller , CallerIpAddress, EventSubmissionTimestamp

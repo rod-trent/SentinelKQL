@@ -1,0 +1,6 @@
+//Switch to Stacked Display
+SecurityEvent
+| where TimeGenerated > ago(1d)
+| summarize count() by tostring(EventID), AccountType, bin(TimeGenerated, 1h)
+
+ 

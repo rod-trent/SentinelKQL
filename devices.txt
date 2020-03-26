@@ -1,0 +1,22 @@
+// find Azure Firewalls 
+
+AzureDiagnostics 
+| where ResourceType == "AZUREFIREWALLS" 
+ 
+//Windows Firewall
+WindowsFirewall
+| summarize count() by FirewallAction
+ 
+//Barracuda
+CGFWFirewallActivity
+ 
+//Barracuda WAF 
+CommonSecurityLog​
+| where DeviceVendor == "Barracuda"
+ 
+//CommonSecurityLog​
+| where DeviceVendor == "Check Point"
+ 
+CommonSecurityLog​
+| where DeviceVendor == "Cisco"
+| where DeviceProduct == "ASA"

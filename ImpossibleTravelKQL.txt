@@ -1,0 +1,4 @@
+SecurityAlert
+| where AlertName == "Impossible travel activity"
+| project (parse_json(Entities)[1].Name), Entities
+| extend Name_ = tostring(parse_json(Entities)[3].Name)

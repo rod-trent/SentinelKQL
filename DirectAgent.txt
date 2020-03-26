@@ -1,0 +1,3 @@
+Heartbeat
+| where Category == "Direct Agent"
+| distinct Computer , Category , OSType , OSMajorVersion , OSMinorVersion

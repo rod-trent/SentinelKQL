@@ -1,0 +1,22 @@
+// Example to perform a aggregation by period where they may be no data for a given period.
+let startdate = todatetime("2016-11-01");
+let enddate = todatetime("2018-11-15");
+OfficeActivity
+| where TimeGenerated between (startdate .. enddate)
+| make-series count(Operation) default=0
+on TimeGenerated in range(startdate, enddate, 1d)
+by OfficeWorkload
+| mvexpand TimeGenerated to typeof(datetime),
+count_Operation to typeof(double)
+ 
+// Same as above however using a numbers table approach similar to the method used in SQL
+let startdate = todatetime("2018-11-01");
+let startdate2 = todatetime("2018-11-07");
+let enddate = todatetime("2018-11-15");
+range Day from startdate to enddate step 1d
+| extend CountOfSomething = 0
+| join kind=fullouter
+(range Day from startdate2 to enddate step 1d
+| extend CountOfActual = 1
+) on Day
+| project Day,Value=iff(isnull(CountOfActual), CountOfSomething, CountOfActual)

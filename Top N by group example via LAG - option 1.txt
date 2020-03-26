@@ -1,0 +1,25 @@
+let SampleUserData=datatable (UserId:int, OperationDate:datetime)
+[1, datetime(2018-01-01 12:30:00),
+1, datetime(2018-01-01 13:30:00),
+2, datetime(2018-01-02 12:30:00),
+2, datetime(2018-01-03 13:30:00),
+3, datetime(2018-01-02 12:30:00),
+3, datetime(2018-01-01 12:30:00),
+3, datetime(2018-02-02 13:30:00),
+1, datetime(2018-02-02 12:30:00),
+1, datetime(2018-02-03 12:30:00),
+3, datetime(2018-03-01 12:30:00),
+3, datetime(2018-03-02 12:30:00),
+2, datetime(2018-03-02 12:30:00),
+1, datetime(2018-03-03 11:30:00),
+1, datetime(2018-03-03 12:30:00),
+1, datetime(2018-03-03 13:30:00)
+];
+SampleUserData
+| extend MonthNum = datetime_part("Month", OperationDate) 
+| summarize CountByMonthNumUserId = count() by MonthNum,UserId
+| order by MonthNum asc, UserId asc, CountByMonthNumUserId desc
+| extend RowNum = row_number(1, prev(MonthNum) != MonthNum)
+| extend CountIsSameAsPrev = CountByMonthNumUserId == prev(CountByMonthNumUserId)
+| where RowNum in (1,2) or CountIsSameAsPrev
+| project-away RowNum, CountIsSameAsPrev 

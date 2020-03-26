@@ -1,0 +1,9 @@
+let SampleData = datatable (user:string, rowValue: int) ["A",5,"B",12,"B",15,"A",3,"A",9,"A",19,"B",7];
+SampleData 
+| serialize
+| extend rowNumber = row_number()
+| extend rowNumberCurrentUser = row_number(1, prev(user,1,0) != user) 
+| extend previousValue = strcat("Previous value was ", prev(rowValue,1,0))
+| extend nextValue = strcat("Next value was ", next(rowNumber,1,0))
+| extend runningTotal = row_cumsum(rowValue)
+| project rowNumber, rowNumberCurrentUser, user, rowValue, previousValue, nextValue, runningTotal

@@ -1,0 +1,4 @@
+MachineInfo
+|where OSPlatform  contains "server" 
+|project ComputerName, OSPlatform 
+|distinct ComputerName, OSPlatform

@@ -1,0 +1,10 @@
+let timeRangeQuery = 1h;
+let UnhealthyCriteria = 1m;
+Heartbeat
+| where TimeGenerated > startofday(ago(timeRangeQuery))
+| summarize LastHeartbeat = max(TimeGenerated) by Computer, OSType, OSName
+| extend State = iff(LastHeartbeat < ago(UnhealthyCriteria), 'Unhealthy', 'Healthy')
+| extend TimeFromNow = now() - LastHeartbeat
+| extend ["TimeAgo"] = strcat(toint(TimeFromNow / 1s), ' seconds')
+| project Computer, State, TimeAgo, TimeFromNow, OSType
+| order by TimeAgo desc, State desc

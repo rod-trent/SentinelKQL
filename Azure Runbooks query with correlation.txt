@@ -1,0 +1,22 @@
+let RequestId = toguid("9A07544E-004A-4E14-895D-3348165D7DBD");
+let UPN = "user@domain.com";
+AzureDiagnostics
+| join kind= inner (
+   AzureDiagnostics
+    | where TimeGenerated > ago(180d)
+    | where resultDescription_RequestId_g == RequestId or resultDescription_UPN_s == UPN
+    | distinct CorrelationId 
+) on CorrelationId 
+| project TimeGenerated,_TimeReceived,Latency=(_TimeReceived-TimeGenerated),RequestId=resultDescription_RequestId_g, RunbookName=RunbookName_s, Status=resultDescription_Status_s,ResultType,UPN=resultDescription_UPN_s,Attempt=
+resultDescription_AttemptCount_d,RequestExpectedSuccessCount=
+resultDescription_RequestExpectedSuccessCount_d, ExternalEmailAddress=resultDescription_ExternalEmailAddress_s 
+| summarize CountSuccess = dcountif(RunbookName, Status == "Success"), 
+    CountFailure = dcountif(RunbookName, Status == "Failure"),
+    CountDistinct = dcountif(RunbookName, Status != "Success"), 
+    RequestExpectedSuccessCount = max(RequestExpectedSuccessCount) by RunbookName
+| summarize requestExpectedSuccessCount = max(RequestExpectedSuccessCount),
+    totalFailed = sum(CountFailure), 
+    totalSuccess = sum(CountSuccess),
+    totalStarted = sum(CountDistinct)
+| extend packedStatistics = pack_all()
+| project packedStatistics

@@ -1,0 +1,11 @@
+let latencyCachedData = materialize(SigninLogs
+| where TimeGenerated > ago(24h)
+| project TimeGenerated, IngestionLatency = (_TimeReceived - TimeGenerated)
+| extend IngestionLatencyInMinutes = (IngestionLatency / 1m));
+union 
+(latencyCachedData
+| evaluate rolling_percentile(IngestionLatencyInMinutes, 95, TimeGenerated, 15m, 5)
+| extend pcnt=95),
+(latencyCachedData
+| evaluate rolling_percentile(IngestionLatencyInMinutes, 99, TimeGenerated, 15m, 5)
+| extend pcnt=99)

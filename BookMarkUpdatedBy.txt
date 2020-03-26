@@ -1,0 +1,3 @@
+HuntingBookmark
+| where isnotempty(CreatedBy)
+| project BookmarkName , UpdatedBy 

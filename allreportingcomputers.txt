@@ -1,0 +1,4 @@
+union withsource = TableName *
+| distinct Computer
+| where isnotempty(Computer)
+| summarize  by Computer

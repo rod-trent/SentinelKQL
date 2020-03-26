@@ -1,0 +1,5 @@
+WindowsEvent
+| where TimeGenerated > ago(7d)
+| extend eventData-parse_json(Data)
+| project  TimeGenerated,  Computer,  EventID,  Data.MemberName,  Data.SubjectDomainName,  Data.SubjetUserName,  Data.TargetUserName
+| where Data_TargetUserName == "Domain Admins" or Data_TargetUserName == "Enterprise Admins"

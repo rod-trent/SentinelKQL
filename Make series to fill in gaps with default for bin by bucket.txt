@@ -1,0 +1,10 @@
+let window = 1d;
+let bucket = 1h;
+let min_t = toscalar(customMetrics | where timestamp > ago(window) | summarize min(timestamp));
+let max_t = toscalar(customMetrics | where timestamp > ago(window) | summarize max(timestamp));
+customMetrics
+| where timestamp > ago(window)
+| make-series totalHeartbeatCountByHour=count() default=0 on timestamp in range(min_t, max_t, bucket) 
+| mvexpand timestamp to typeof(datetime),
+    totalHeartbeatCountByHour to typeof(double)
+| sort by timestamp desc

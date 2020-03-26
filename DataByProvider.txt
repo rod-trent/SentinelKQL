@@ -1,0 +1,10 @@
+SecurityAlert
+| where ProviderName == "MCAS" 
+
+
+SecurityAlert
+| where ProviderName == "Office 365 Security & Compliance" 
+
+
+SecurityAlert
+| where ProviderName == "MDATP" 

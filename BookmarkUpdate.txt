@@ -1,0 +1,3 @@
+AzureActivity
+| where OperationName == "Update Bookmarks" and ActivityStatusValue == "Succeeded" 
+| project Caller , EventSubmissionTimestamp

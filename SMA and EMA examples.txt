@@ -1,0 +1,32 @@
+// Simple moving average (SMA) version, curve smoothing.
+let window = 7d;
+let bucket = 1d;
+let min_t = toscalar(OfficeActivity
+| where TimeGenerated > ago(window)
+| summarize min(TimeGenerated));
+let max_t = toscalar(OfficeActivity
+| where TimeGenerated > ago(window)
+| summarize max(TimeGenerated));
+OfficeActivity
+| make-series totalAuditCountByDay=count() default=0 on TimeGenerated in range(min_t, max_t, bucket)
+| extend buckets=range(min_t, max_t, bucket)
+| extend 3d_SimpleMovingAvg=series_fir(totalAuditCountByDay, dynamic([1,1,1])), 3d_SimpleMovingAvg_centered=series_fir(totalAuditCountByDay, dynamic([1,1,1]), true, true), 5d_SimpleMovingAvg=series_fir(totalAuditCountByDay, dynamic([1,1,1,1,1]))
+| project buckets,3d_SimpleMovingAvg, 3d_SimpleMovingAvg_centered, 5d_SimpleMovingAvg
+| render timechart
+ 
+// Exponential moving average (EMA) version over X days
+// l sub p is the estimate or smoothed value of the data, smoothing coefficient more aggressive towards 0
+let window = 30d;
+let bucket = 1d;
+let min_t = toscalar(OfficeActivity | where TimeGenerated > ago(window) | summarize min(TimeGenerated));
+let max_t = toscalar(OfficeActivity | where TimeGenerated > ago(window) | summarize max(TimeGenerated));
+let series_exp_smooth = (series:dynamic, alpha:real)
+{
+series_iir(series, pack_array(alpha), pack_array(1, alpha-1))
+};
+OfficeActivity
+| make-series totalAuditCountByDay=count() default=0 on TimeGenerated in range(min_t, max_t, bucket)
+| extend lp_num1 = series_exp_smooth(totalAuditCountByDay, 0.6)
+| extend lp_num2 = series_exp_smooth(totalAuditCountByDay, 0.5)
+| extend lp_num3 = series_exp_smooth(totalAuditCountByDay, 0.4)
+| render timechart

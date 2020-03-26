@@ -1,0 +1,13 @@
+union isfuzzy=true withsource = TableName
+// Microsoft 
+(AzureDiagnostics    | where ResourceType == "AZUREFIREWALLS" ), 
+(WindowsFirewall     | summarize count() by FirewallAction ), 
+// Barracuda GlodGen Syslog
+(CGFWFirewallActivity| summarize count() by DeviceName = Computer ),   
+// CEF section
+(CommonSecurityLog   | where DeviceVendor == "Barracuda" ), 
+(CommonSecurityLog   | where DeviceVendor == "Fortinet"              | summarize count() by DeviceVendor, DeviceName = DeviceExternalID), 
+(CommonSecurityLog   | where DeviceVendor == "TestCommonEventFormat" | summarize count() by DeviceVendor, DeviceName = DeviceExternalID), 
+(CommonSecurityLog   | where DeviceVendor == "Palo Alto Networks"    | where isnotempty(DeviceName) | summarize count() by DeviceVendor, DeviceName) 
+// show devices found
+| summarize count() by  DeviceName , DeviceVendor 

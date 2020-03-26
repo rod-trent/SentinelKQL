@@ -1,0 +1,4 @@
+Heartbeat
+| project Computer , Category 
+|where Category contains "Scom agent" 
+|distinct Computer//
