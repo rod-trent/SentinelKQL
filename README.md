@@ -1,0 +1,2 @@
+# SentinelKQL
+Azure Sentinel KQL
