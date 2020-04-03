@@ -1,0 +1,4 @@
+AzureActivity
+| where TimeGenerated > ago(1d)
+| where ResourceGroup contains "cloud-shell" and ActivityStatus == "Started"
+| project CallerIpAddress , Caller 
