@@ -1,0 +1,9 @@
+AzureActivity
+| where ResourceGroup startswith "CLOUD-SHELL"
+| extend action_ = tostring(parse_json(Authorization).action) 
+| summarize count() by ResourceGroup  , Caller , CallerIpAddress , ActivityStatusValue , ActivitySubstatusValue,  CategoryValue , action_ 
+ 
+// List sucess vs. failure 
+AzureActivity
+| where ResourceGroup startswith "CLOUD-SHELL"
+| summarize count(ActivityStatus) by Caller, ActivityStatus
