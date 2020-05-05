@@ -1,0 +1,6 @@
+SigninLogs 
+| where AppDisplayName == "Microsoft Cloud App Security" 
+| extend UserBrowser_ = tostring(DeviceDetail.browser) 
+| extend UserOperatingSystem_ = tostring(DeviceDetail.operatingSystem) 
+| extend UserCountryOrRegion_ = tostring(LocationDetails.countryOrRegion) 
+| extend UserCity_ = tostring(LocationDetails.city) 
