@@ -1,0 +1,3 @@
+SecurityEvent
+| where TimeGenerated >= startofday(ago(1d)) and TimeGenerated < startofday(now())
+| summarize sum(_BilledSize) by EventID
