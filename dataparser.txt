@@ -1,0 +1,8 @@
+MyCustomCSVLog_CL
+| extend CSVFields  = split(RawData, ',')
+| extend EventTime  = todatetime(CSVFields[0])
+| extend Code       = toint(CSVFields[1]) 
+| extend Status     = tostring(CSVFields[2]) 
+| extend Message    = tostring(CSVFields[3]) 
+| where getyear(EventTime) == 2018
+| summarize count() by Status,Code
