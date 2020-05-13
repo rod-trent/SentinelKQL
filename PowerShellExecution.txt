@@ -1,0 +1,3 @@
+SecurityEvent
+| where ProcessName contains "powershell.exe"
+| project TimeGenerated, Computer, SubjectUserName, SubjectDomainName, Process, CommandLine, ParentProcessName
