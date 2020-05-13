@@ -1,0 +1,2 @@
+SecurityEvent
+| where TimeGenerated between(datetime("2020-04-01 22:46:42") .. datetime("2020-04-30 00:57:27"))
