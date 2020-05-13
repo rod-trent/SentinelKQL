@@ -1,0 +1,10 @@
+OfficeActivity
+| where  RecordType == "SharePointFileOperation"
+| where Operation == "FileDownloaded" or Operation == "FileSyncDownloadedFull"
+| join kind= inner (
+    Heartbeat
+    | summarize arg_max(TimeGenerated, *) by ComputerIP
+    | extend ClientIP = tostring(ComputerIP), Computer
+) on ClientIP
+| project TimeGenerated, ClientIP, Computer, Operation, OfficeWorkload, UserId, SourceFileName, OfficeObjectId
+| sort by TimeGenerated desc
