@@ -1,0 +1,6 @@
+CommonSecurityLog
+| where DeviceVendor == "sophos" and LogSeverity == 8 and Activity !in ("Real time protection disabled") 
+| sort by TimeGenerated
+| project TimeGenerated, Activity, DestinationHostName, SourceUserName, LogSeverity
+| extend HostCustomEntity = DestinationHostName
+| extend AccountCustomEntity = SourceUserName
