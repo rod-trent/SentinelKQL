@@ -1,0 +1,2 @@
+AzureActivity
+| where _ResourceId contains "SecurityInsights" and _ResourceId contains "incidents"
