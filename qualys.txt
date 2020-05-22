@@ -1,0 +1,3 @@
+SecurityAlert
+| where ProviderName contains "asc" and ExtendedProperties contains "qualys"
+| project RemediationSteps
