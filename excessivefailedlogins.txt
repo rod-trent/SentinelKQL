@@ -1,0 +1,5 @@
+SecurityEvent
+| where TimeGenerated < startofday(ago(1d))
+| where EventID in (4625) and Status=="0xc000006d"
+| summarize min(TimeGenerated),  EventCount = count() by bin_at(TimeGenerated, 1h,now())
+| order by TimeGenerated asc
