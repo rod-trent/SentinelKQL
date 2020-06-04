@@ -1,0 +1,4 @@
+AzureActivity
+| where parse_json(Authorization).action == "Microsoft.Network/networkSecurityGroups/securityRules/write" and ActivityStatus == "Succeeded"
+| make-series count() default=0 on TimeGenerated in range(ago(7d), now(), 1d) by Caller
+|render barchart
