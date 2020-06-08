@@ -1,0 +1,6 @@
+let IncidentURL = "https://portal.azure.com/#asset/Microsoft_Azure_Security_Insights/Incident"; 
+AzureActivity
+| where _ResourceId contains "Microsoft.SecurityInsights" and _ResourceId contains "incidents"
+| summarize by _ResourceId
+| extend IncidentLINK = strcat(IncidentURL, _ResourceId)
+| project IncidentLINK
