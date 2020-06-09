@@ -1,0 +1,3 @@
+SecurityIncident
+| where TimeGenerated > ago(10d) 
+| where Status == "Active"
