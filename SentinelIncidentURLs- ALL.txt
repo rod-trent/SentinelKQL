@@ -3,4 +3,4 @@ AzureActivity
 | where _ResourceId contains "Microsoft.SecurityInsights" and _ResourceId contains "incidents"
 | summarize by _ResourceId
 | extend IncidentLINK = strcat(IncidentURL, _ResourceId)
-| project IncidentLINK
+| distinct IncidentLINK
