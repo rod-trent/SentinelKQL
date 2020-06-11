@@ -1,0 +1,4 @@
+SecurityAlert
+| where ProviderName contains "ASI"
+| distinct DisplayName
+| summarize count() by DisplayName
