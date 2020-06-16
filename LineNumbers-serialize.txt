@@ -1,0 +1,8 @@
+let timeframe = 1d;
+SecurityEvent
+| where TimeGenerated >= ago(timeframe)
+| where EventID in (4624, 4625)
+| where AccountType == 'User' 
+| summarize StartTimeUtc = min(TimeGenerated), EndTimeUtc = max(TimeGenerated), Amount = count() by LogonTypeName
+| extend timestamp = StartTimeUtc
+| serialize Num = row_number() //using the serialize operator to generate line numbers
