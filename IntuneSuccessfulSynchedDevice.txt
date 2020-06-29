@@ -1,0 +1,2 @@
+IntuneAuditLogs 
+| where OperationName == " syncDevice ManagedDevice" and ResultType == "Success"

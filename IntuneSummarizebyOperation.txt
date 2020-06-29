@@ -1,0 +1,2 @@
+IntuneAuditLogs 
+| summarize count() by OperationName

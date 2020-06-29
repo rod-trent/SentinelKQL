@@ -1,0 +1,3 @@
+IntuneAuditLogs 
+| top 10 by TimeGenerated
+| project Identity, OperationName
