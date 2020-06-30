@@ -1,0 +1,4 @@
+SigninLogs 
+| where TimeGenerated > ago(4h) 
+| where ResultType == "50053"
+| project UserDisplayName
