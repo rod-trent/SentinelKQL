@@ -1,0 +1,4 @@
+SecurityEvent
+| where EventID == 4740 or EventID == 644 //A user account was locked out
+| extend LowerAccount=tolower(Account)
+| search "username"
