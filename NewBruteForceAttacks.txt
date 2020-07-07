@@ -1,0 +1,21 @@
+let ExcludedIP = dynamic ([
+'172.24.1.4'
+]);
+let PreviousFailures = SecurityEvent
+| where TimeGenerated between (ago(60m) .. ago(10m))
+| where EventID == 4625
+| where SubStatus != "0xc0000064"
+| where AccountType != 'Machine'
+| where IpAddress !in (ExcludedIP)
+| summarize FailureCount=count() by TargetAccount, IpAddress, bin(TimeGenerated, 50m)
+| where FailureCount >= 50
+| summarize make_set(strcat(TargetAccount, ' ', IpAddress));
+SecurityEvent
+| where TimeGenerated > ago(10m)
+| where EventID == 4625
+| where SubStatus != "0xc0000064"
+| where AccountType != 'Machine'
+| where IpAddress !in (ExcludedIP)
+| summarize FailureCount=count() by TargetAccount, IpAddress, bin(TimeGenerated, 10m)
+| where FailureCount >= 10
+| where strcat(TargetAccount, ' ', IpAddress) !in (PreviousFailures)
