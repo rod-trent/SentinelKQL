@@ -1,0 +1,5 @@
+//Top users with audited actions
+IntuneAuditLogs
+| extend myJson=todynamic(Properties)
+| summarize OperationCount=count() by Identity 
+| sort by OperationCount desc
