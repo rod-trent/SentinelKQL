@@ -1,0 +1,4 @@
+//Activity Types
+IntuneAuditLogs
+| summarize OperationCount=count() by OperationName 
+| sort by OperationCount desc
