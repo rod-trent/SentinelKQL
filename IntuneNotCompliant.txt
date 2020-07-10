@@ -1,0 +1,2 @@
+IntuneDeviceComplianceOrg
+| where ComplianceState <> "Compliant" and isnotempty(ComplianceState)
