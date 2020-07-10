@@ -1,0 +1,16 @@
+let ComplianceLogs=
+IntuneOperationalLogs 
+| where OperationName == "Compliance" 
+| project TimeGenerated, Properties;
+ComplianceLogs
+| sort by TimeGenerated desc
+| join (
+ComplianceLogs
+| extend myJson = todynamic(Properties)
+| project-away Properties
+| extend IntuneDeviceId=tostring(myJson["IntuneDeviceId"]) 
+| project TimeGenerated, IntuneDeviceId
+| summarize TimeGenerated=max(TimeGenerated) by IntuneDeviceId    
+) on TimeGenerated
+| project-away TimeGenerated1, IntuneDeviceId  
+| summarize EventCount=count() by bin(TimeGenerated, {TimeRange:grain})
