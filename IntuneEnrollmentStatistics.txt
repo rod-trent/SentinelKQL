@@ -1,0 +1,4 @@
+//Enrollment Statistics
+IntuneOperationalLogs
+| where  OperationName == "Enrollment"
+| summarize count() by Result
