@@ -1,0 +1,3 @@
+//Audit Events Trend
+IntuneAuditLogs
+| summarize count() by bin(TimeGenerated, {TimeRange:grain})
