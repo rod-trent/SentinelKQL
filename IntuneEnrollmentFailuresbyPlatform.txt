@@ -1,0 +1,8 @@
+//Enrollment Failures by Platform
+IntuneOperationalLogs
+| where  OperationName == "Enrollment" 
+| where Result == "Fail"
+| extend myJson=todynamic(Properties)
+| extend Platform = tostring(myJson ["Os"])
+| summarize OperationCount=count() by Platform 
+| sort by OperationCount desc
