@@ -1,0 +1,4 @@
+//Enrollment Events Trend
+IntuneOperationalLogs
+| where OperationName=="Enrollment"
+| summarize OperationCount=count() by bin(TimeGenerated, {TimeRange:grain})
