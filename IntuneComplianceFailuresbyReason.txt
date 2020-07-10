@@ -1,0 +1,23 @@
+//Compliance Failures by Failure Reason
+let ComplianceLogs=
+IntuneOperationalLogs 
+| where OperationName == "Compliance" 
+| project TimeGenerated, Properties;
+ComplianceLogs
+| sort by TimeGenerated desc
+| join (
+ComplianceLogs
+| extend myJson = todynamic(Properties)
+| project-away Properties
+| extend IntuneDeviceId=tostring(myJson["IntuneDeviceId"]) 
+| project TimeGenerated, IntuneDeviceId
+| summarize TimeGenerated=max(TimeGenerated) by IntuneDeviceId    
+) on TimeGenerated
+| project-away TimeGenerated1, IntuneDeviceId  
+| extend myJson=todynamic(Properties)
+| project-away Properties
+| extend Description=tostring(myJson["Description"])
+| extend Description=tostring(extract("(.*?)_IID_.*", 1, tostring(Description)))
+| extend Reason = tostring(extract("(.*?)\\.(.*)", 2, tostring(Description)))
+| summarize FailureCount=count() by Reason 
+| sort by FailureCount desc
