@@ -1,0 +1,8 @@
+//Enrollment Failure reasons
+IntuneOperationalLogs
+| where  OperationName == "Enrollment" 
+| where Result == "Fail"
+| extend myJson=todynamic(Properties)
+| extend FailureReason = tostring(myJson ["FailureReason"])
+| summarize OperationCount=count() by FailureReason
+| sort by OperationCount desc
