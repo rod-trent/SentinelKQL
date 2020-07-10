@@ -1,0 +1,8 @@
+//Enrollment Failures by Enrollment Type
+IntuneOperationalLogs
+| where  OperationName == "Enrollment" 
+| where Result == "Fail" 
+| extend myJson=todynamic(Properties)
+| extend EnrollmentType = tostring(myJson ["EnrollmentType"])
+| summarize OperationCount=count() by EnrollmentType 
+| sort by OperationCount desc
