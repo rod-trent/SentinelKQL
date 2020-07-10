@@ -1,0 +1,5 @@
+//Remote actions top users
+IntuneAuditLogs
+| where OperationName contains "ManagedDevice" 
+| summarize OperationCount=count() by Identity
+| sort by OperationCount desc 
