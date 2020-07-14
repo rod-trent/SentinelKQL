@@ -1,0 +1,4 @@
+//Looking for Installed KBIDs
+Update
+| where KBID == "4565511" or KBID == "4558998" or KBID == "4565483" or KBID == "4565503"
+| distinct Computer, Product, KBID
