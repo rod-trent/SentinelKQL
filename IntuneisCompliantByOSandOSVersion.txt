@@ -1,0 +1,5 @@
+//Intune devices that are compliant with OS, OS Version, and number of existing
+IntuneDeviceComplianceOrg 
+| where isnotempty(DeviceName)
+| where ComplianceState == "Compliant"
+| summarize count() by OSDescription, OSVersion
