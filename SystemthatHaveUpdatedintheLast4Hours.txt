@@ -1,0 +1,7 @@
+//Systems that have updated in the last 4 hours
+Update
+| where TimeGenerated < ago(4h)
+| where UpdateState != 'Installed'
+| extend Resource = Computer
+| summarize count() by Resource
+| sort by count_ desc
