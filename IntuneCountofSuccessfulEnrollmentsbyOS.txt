@@ -1,0 +1,5 @@
+//Count of Successful Enrollments by OS
+IntuneOperationalLogs 
+| where OperationName == "Enrollment" and Result == "Success"
+| extend Os_ = tostring(parse_json(Properties).Os)
+| summarize count() by Os_
