@@ -1,0 +1,7 @@
+//Countries where your agented computers are reporting from
+union isfuzzy=true   
+(Heartbeat
+| extend TrafficDirection = "InboundOrUnknown", Country=RemoteIPCountry, Latitude=RemoteIPLatitude, Longitude=RemoteIPLongitude)
+| where TimeGenerated > ago(7d)   
+| where isnotempty(Country) and isnotempty(Latitude) and isnotempty(Longitude)
+| distinct Country
