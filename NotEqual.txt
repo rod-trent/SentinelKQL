@@ -1,0 +1,4 @@
+//Not Equal example
+SecurityAlert
+| where DisplayName == "An event log was cleared"
+| where EndTime != "7/15/2020, 5:55:31.000 PM" and ProviderName != "IPC" and SystemAlertId != "e3f60b59-3c5c-5b5d-8213-698a58fa39aa"
