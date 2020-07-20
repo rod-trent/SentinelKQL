@@ -1,0 +1,4 @@
+//Listing all Data providers
+SecurityAlert
+| where isnotempty(ProviderName)
+| distinct ProviderName
