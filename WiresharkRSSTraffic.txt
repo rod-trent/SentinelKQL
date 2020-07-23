@@ -1,0 +1,5 @@
+//RSS traffic 
+Wireshark_CL 
+| where TimeGenerated > ago(1d)
+| where RawData contains "rss.channel.item.link"
+| distinct RawData
