@@ -1,0 +1,3 @@
+AzureActivity
+| where parse_json(Authorization).action == "Microsoft.Network/networkSecurityGroups/securityRules/write" and ActivityStatus == "Succeeded"
+| distinct Resource, Caller
