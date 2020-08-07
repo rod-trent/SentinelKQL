@@ -1,0 +1,9 @@
+//The applications an administrator granted admin consent
+
+AuditLogs
+| where OperationName == "Consent to application"
+| extend Iby=todynamic(InitiatedBy) 
+| extend IbyUser=(Iby.user)
+| extend TR=todynamic(tostring(TargetResources))
+| mv-expand Targets = TR
+| project TimeGenerated,AADTenantId,UPN=IbyUser.userPrincipalName,APPName=Targets.displayName,APPID=Targets.id
