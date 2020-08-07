@@ -1,0 +1,6 @@
+//Agented devices that are not AD-joined
+
+SigninLogs
+| union Heartbeat
+| where Category == "Direct Agent" and DeviceDetail <> "Azure AD joined"
+| distinct Computer
