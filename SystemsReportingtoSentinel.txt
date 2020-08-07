@@ -1,0 +1,6 @@
+//Agented systems reporting to Azure Sentinel
+
+SigninLogs
+| union Heartbeat
+| where Category == "Direct Agent"
+| distinct Computer
