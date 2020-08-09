@@ -1,0 +1,8 @@
+//Sign-ins - how many per day - good example of parsing TimeGenerated into readable day/time
+
+SigninLogs 
+| where AuthenticationRequirement == "multiFactorAuthentication"
+| summarize count() by bin(TimeGenerated, 1d)
+| extend myDAY = split(TimeGenerated, "T", 0)
+| order by TimeGenerated asc
+| project myDAY, count_
