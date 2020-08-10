@@ -3,6 +3,7 @@
 SigninLogs 
 | where AuthenticationRequirement == "multiFactorAuthentication"
 | summarize count() by bin(TimeGenerated, 1d)
-| extend myDAY = split(TimeGenerated, "T", 0)
+| extend myDAY = format_datetime(TimeGenerated, 'yyyy-MM-dd') //using datetime
+//| extend myDAY = split(TimeGenerated, "T", 0) //parsing using split
 | order by TimeGenerated asc
 | project myDAY, count_
