@@ -1,9 +1,11 @@
-//Sign-ins - how many per day - good example of parsing TimeGenerated into readable day/time
+//Sign-ins - how many per day - different ways to get the day split out
 
 SigninLogs 
 | where AuthenticationRequirement == "multiFactorAuthentication"
 | summarize count() by bin(TimeGenerated, 1d)
 | extend myDAY = format_datetime(TimeGenerated, 'yyyy-MM-dd') //using datetime
-//| extend myDAY = split(TimeGenerated, "T", 0) //parsing using split
+//| extend myDAY = format_datetime(TimeGenerated, 'dd') //using datetime, just the day
+//| extend myDAY = bin(TimeGenerated, 1d) //using bin, but still displays the time, too
+//| extend myDAY = split(TimeGenerated, "T", 0) //using split to parse
 | order by TimeGenerated asc
 | project myDAY, count_
