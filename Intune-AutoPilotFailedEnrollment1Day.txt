@@ -1,0 +1,8 @@
+//Autopilot devices that failed enrollment in the last day
+
+IntuneOperationalLogs
+| where TimeGenerated > ago(24h)
+| extend IsAutopilot_ = tostring(parse_json(Properties).IsAutopilot)
+| extend DeviceName_ = tostring(parse_json(Properties).DeviceName)
+| where IsAutopilot_ == "True"
+| where OperationName == "Enrollment" and Result == "Failure"
