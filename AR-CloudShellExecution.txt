@@ -4,6 +4,6 @@ AzureActivity
 | where ResourceGroup startswith "CLOUD-SHELL"
 | where ActivityStatusValue == "Started"
 | extend action_ = tostring(parse_json(Authorization).action) 
-| summarize count() by ResourceGroup  , Caller , CallerIpAddress , ActivityStatusValue , ActivitySubstatusValue,  CategoryValue , action_
+| summarize count() by TimeGenerated , ResourceGroup  , Caller , CallerIpAddress , ActivityStatusValue
 | extend AccountCustomEntity = Caller
 | extend IPCustomEntity = CallerIpAddress
