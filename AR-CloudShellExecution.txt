@@ -1,0 +1,9 @@
+//KQL for Analytics Rule to track Cloud Shell Execution
+
+AzureActivity
+| where ResourceGroup startswith "CLOUD-SHELL"
+| where ActivityStatusValue == "Started"
+| extend action_ = tostring(parse_json(Authorization).action) 
+| summarize count() by ResourceGroup  , Caller , CallerIpAddress , ActivityStatusValue , ActivitySubstatusValue,  CategoryValue , action_
+| extend AccountCustomEntity = Caller
+| extend IPCustomEntity = CallerIpAddress
