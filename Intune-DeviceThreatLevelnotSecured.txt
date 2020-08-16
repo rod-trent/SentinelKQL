@@ -1,0 +1,6 @@
+//Intune Device Threat Level not Secured
+
+IntuneDeviceComplianceOrg
+| where isnotempty(DeviceHealthThreatLevel)
+| where DeviceHealthThreatLevel != "Secured"
+| project TimeGenerated , DeviceName , DeviceId , OS , UserName , DeviceHealthThreatLevel
