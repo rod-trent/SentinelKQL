@@ -1,0 +1,6 @@
+//Intune Devices Not Compliant
+
+IntuneDeviceComplianceOrg
+| where isnotempty(DeviceHealthThreatLevel)
+| where ComplianceState != "Compliant"
+| project TimeGenerated , ComplianceState , DeviceName , DeviceId , OS , UserName , UserEmail
