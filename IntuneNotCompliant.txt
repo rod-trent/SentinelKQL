@@ -1,2 +1,3 @@
 IntuneDeviceComplianceOrg
-| where ComplianceState <> "Compliant" and isnotempty(ComplianceState)
+| where ComplianceState <> "Not Compliant" and isnotempty(ComplianceState)
+| project TimeGenerated , ComplianceState , DeviceName , DeviceId , OS , UserName , UserEmail
