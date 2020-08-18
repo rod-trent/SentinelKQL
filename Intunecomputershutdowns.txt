@@ -1,0 +1,7 @@
+// Computers restarts/shutdowns 
+// List restart and shutdowns events for all monitored computers. 
+ Event
+| where  EventLog == "System" and Source == "User32" and EventID == 1074
+| search "shutdown"
+| sort by TimeGenerated desc 
+| project TimeGenerated, Computer
