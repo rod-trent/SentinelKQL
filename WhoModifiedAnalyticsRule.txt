@@ -1,0 +1,5 @@
+AzureActivity
+| where OperationNameValue contains "MICROSOFT.SECURITYINSIGHTS/ALERTRULES/WRITE"
+| where ActivityStatusValue == "Success"
+| extend Analytics_Rule_ID = tostring(parse_json(Properties).resource)
+| project TimeGenerated , CallerIpAddress , Caller , Analytics_Rule_ID
