@@ -1,4 +1,6 @@
 //Enrollments abandoned by the user
+//For details, see (https://docs.microsoft.com/en-us/mem/intune/enrollment/enrollment-report-company-portal-abandon)
+
 IntuneOperationalLogs
 | where OperationName == "Enrollment" 
 | where Result == "Fail"
