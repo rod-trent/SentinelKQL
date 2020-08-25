@@ -1,0 +1,5 @@
+IntuneOperationalLogs
+| extend FailureCategory_ = tostring(parse_json(Properties).FailureCategory)
+| where FailureCategory_ == "DeviceNotSupported"
+| extend Os_ = tostring(parse_json(Properties).Os)
+| project TimeGenerated , FailureCategory_ , Os_
