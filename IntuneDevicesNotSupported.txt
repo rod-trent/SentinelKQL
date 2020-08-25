@@ -1,3 +1,5 @@
+//Devices not supported by time, failure type, and operating system
+
 IntuneOperationalLogs
 | extend FailureCategory_ = tostring(parse_json(Properties).FailureCategory)
 | where FailureCategory_ == "DeviceNotSupported"
