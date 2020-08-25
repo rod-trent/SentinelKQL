@@ -1,0 +1,11 @@
+//Enrollments abandoned by the user
+IntuneOperationalLogs
+| where OperationName == "Enrollment" 
+| where Result == "Fail"
+| extend myJson=todynamic(Properties)
+| extend FailureReason = tostring(myJson ["FailureReason"])
+| extend Os_ = tostring(parse_json(Properties).Os)
+| extend IntuneUserId_ = tostring(parse_json(Properties).IntuneUserId)
+| where FailureReason == "UserAbandonment" 
+| summarize OperationCount=count() by FailureReason , IntuneUserId_ , Os_
+| sort by OperationCount desc
