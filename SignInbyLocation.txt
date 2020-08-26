@@ -1,0 +1,21 @@
+SigninLogs
+| where TimeGenerated > ago(120d)
+| where UserDisplayName !="On-Premises Directory Synchronization Service Account"
+| extend city_  = tostring(LocationDetails.city) 
+| extend state_ = tostring(LocationDetails.state) 
+| extend countryOrRegion_ = tostring(LocationDetails.countryOrRegion) 
+| extend latitude_  = tostring(parse_json(tostring(LocationDetails.geoCoordinates)).latitude) 
+| extend longitude_ = tostring(parse_json(tostring(LocationDetails.geoCoordinates)).longitude) 
+| order by TimeGenerated asc , city_ asc
+| serialize 
+| extend pLat = prev(latitude_,1)
+| extend pLon = prev(longitude_,1)
+| extend distance_in_miles = iif(isnotempty(pLat),tostring(round(geo_distance_2points(todouble(longitude_), todouble(latitude_), todouble(pLon), todouble(pLat))/1609.344 ,2)),"FirstLocation")
+| where distance_in_miles !="0.0"
+| summarize count() by bin(TimeGenerated, 24h),                    
+                       userNameLocation = strcat(UserDisplayName," 👤 " ,city_ , " 🗺️ ",
+                       countryOrRegion_),
+                       visit_order = strcat(row_number(), ".",city_),
+                       MilesTravelled=distance_in_miles                                        
+| project-away count_
+| order by TimeGenerated asc, visit_order asc
