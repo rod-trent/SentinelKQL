@@ -1,0 +1,9 @@
+//Data ingestion crossed the limit
+Operation
+|where OperationCategory == "Ingestion"
+|where Detail startswith "The data ingestion volume rate crossed the threshold"
+
+//Data ingestion crossed 80% of the limit
+Operation
+|where OperationCategory == "Ingestion"
+|where Detail startswith "The data ingestion volume rate crossed 80% of the threshold"
