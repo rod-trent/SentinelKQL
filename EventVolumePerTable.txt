@@ -1,0 +1,13 @@
+//Event volume per table. Change OfficeActivity to the table you want to query against.
+
+let Now = now();
+(range TimeGenerated from ago(14d) to Now-1d step 1d
+| extend Count = 0
+| union isfuzzy=true(
+		OfficeActivity
+		| summarize Count = count() by bin_at(TimeGenerated, 1d, Now)
+)
+| summarize Count=max(Count) by bin_at(TimeGenerated, 1d, Now)
+| sort by TimeGenerated
+| project Value = iff(isnull(Count), 0, Count), Time = TimeGenerated, Legend = "Events")
+| render timechart
