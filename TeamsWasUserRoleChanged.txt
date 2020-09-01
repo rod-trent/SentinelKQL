@@ -1,0 +1,6 @@
+//Was a user's role changed for a Team in the last 7 days
+
+OfficeActivity
+| where TimeGenerated > ago(7d)
+| where Operation =~ "MemberRoleChanged"
+| where Members contains "Role" and Members contains "1"
