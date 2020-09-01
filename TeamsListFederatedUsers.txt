@@ -1,0 +1,9 @@
+//List of Teams sites that have federated external users
+
+OfficeActivity
+| where TimeGenerated > ago(7d)
+| where Operation =~ "MemberAdded"
+| extend UPN = tostring(parse_json(Members)[0].Upn)
+| where UPN !endswith "sixmilliondollarman.onmicrosoft.com"
+| where parse_json(Members)[0].Role == 3
+| project TeamName, Operation, UserId, Members, UPN
