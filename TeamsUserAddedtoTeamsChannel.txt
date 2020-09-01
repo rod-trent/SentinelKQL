@@ -1,0 +1,6 @@
+//Query a specific user to check if they were added to a Teams channel in the last 7 days
+
+OfficeActivity
+| where TimeGenerated > ago(7d)
+| where Operation =~ "MemberAdded"
+| where Members contains "UserName"
