@@ -1,0 +1,6 @@
+//Number of events over selected time
+
+union withsource=TableName *
+| where 'All Tables' == 'All Tables' or TableName == 'All Tables'
+| summarize count()  by bin(TimeGenerated, 3h), Type
+| project ['Table name'] = Type, ['Time generated'] = TimeGenerated, ['Number of events'] = count_
