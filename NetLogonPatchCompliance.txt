@@ -5,4 +5,4 @@ SecurityEvent
 | join Heartbeat on Computer
 //| where EventID == "5829" //Tracking NetLogon Non-Compliance
 //| where EventID == "5827" or EventID == "5828" //Tracking NetLogon Compliance
-| project Computer, OSType, OSMajorVersion, Version
+| distinct Computer, OSType, OSMajorVersion, Version
