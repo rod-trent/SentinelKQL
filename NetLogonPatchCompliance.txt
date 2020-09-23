@@ -1,0 +1,8 @@
+//Choose which to track (compliance or non-compliance) and remove the comment
+//Based on https://support.microsoft.com/en-us/help/4557222/how-to-manage-the-changes-in-netlogon-secure-channel-connections-assoc
+
+SecurityEvent
+| join Heartbeat on Computer
+//| where EventID == "5829" //Tracking NetLogon Non-Compliance
+//| where EventID == "5827" or EventID == "5828" //Tracking NetLogon Compliance
+| project Computer, OSType, OSMajorVersion, Version
