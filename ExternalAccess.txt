@@ -1,0 +1,8 @@
+//This is an example line of KQL query for external data retrieval.
+//This example queries IP-API with an IP address and returns country, region, regionName, and city. 
+//This is a way to do this while developing a KQL query in the Logs blade.
+//You can also do this (IP-API query) with a Playbook to add additional context to an Incident in the comments
+//See: https://secureinfra.blog/2020/09/03/how-to-add-geographical-data-for-ip-addresses-to-an-azure-sentinel-incident/
+
+externaldata(status:string, country:string, region:string, regionName:string, city:string)[h@"ip-api.com/json/xx.xx.xx.…"]
+with(format="json")
