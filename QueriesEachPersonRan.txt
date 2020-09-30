@@ -1,0 +1,6 @@
+//The actual KQL queries that each person ran in the last 7 days
+//Enabling the Diag Setting for the Audit log is required to expose the LAQueryLogs table
+
+LAQueryLogs
+| where TimeGenerated > ago(7d)
+| project AADEmail, QueryText
