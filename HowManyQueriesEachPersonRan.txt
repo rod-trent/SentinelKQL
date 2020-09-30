@@ -1,0 +1,13 @@
+//How many queries each person ran in the last 7 days
+//Enabling the Diag Setting for the Audit log is required to expose the LAQueryLogs table
+
+LAQueryLogs
+| where TimeGenerated > ago(7d)
+| summarize events_count=count() by AADEmail
+| extend UserPrincipalName = AADEmail, Queries = events_count
+| join kind= leftouter (
+    SigninLogs)
+    on UserPrincipalName
+| project UserDisplayName, UserPrincipalName, Queries
+| summarize arg_max(Queries, *) by UserPrincipalName
+| sort by Queries desc
