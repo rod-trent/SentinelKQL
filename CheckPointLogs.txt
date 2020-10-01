@@ -1,0 +1,6 @@
+//Check Point logs
+
+CommonSecurityLog
+| extend DeviceProduct = iif(DeviceEventClassID has "geo_protection","Check Point Geo Protection",
+iif(DeviceEventClassID has "Log","Check Point Firewall-1 Log","Check Point"))
+| sort by TimeGenerated desc
