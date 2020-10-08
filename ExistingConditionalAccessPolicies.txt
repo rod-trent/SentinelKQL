@@ -1,0 +1,7 @@
+//Display the existing Conditional Access Policies
+
+SigninLogs
+| mv-expand ConditionalAccessPolicies
+| project DisplayName = tostring(ConditionalAccessPolicies.displayName),ID = tostring(ConditionalAccessPolicies.id)
+| distinct ID,DisplayName
+| order by DisplayName asc 
