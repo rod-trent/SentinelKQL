@@ -1,0 +1,11 @@
+//AzureActivity logs differently between certain instances of Azure. For those environments where the original CloudShell Analytics Rules
+//doesn't work. Use this.
+
+AzureActivity
+| where ResourceGroup startswith "CLOUD-SHELL"
+| where ResourceProviderValue == "MICROSOFT.STORAGE"
+| where ActivityStatusValue == "Start"
+| extend action_ = tostring(parse_json(Authorization).action) 
+| summarize count() by TimeGenerated , ResourceGroup  , Caller , CallerIpAddress , ActivityStatusValue
+| extend AccountCustomEntity = Caller
+| extend IPCustomEntity = CallerIpAddress
