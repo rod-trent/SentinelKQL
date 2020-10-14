@@ -1,5 +1,6 @@
 //AzureActivity logs differently between certain instances of Azure. For those environments where the original CloudShell Analytics Rules
-//doesn't work. Use this.
+//doesn't work. Use this. 
+//Still attempting to determine why the differences.
 
 AzureActivity
 | where ResourceGroup startswith "CLOUD-SHELL"
