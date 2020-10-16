@@ -1,0 +1,7 @@
+// List restart and shutdowns events for the last 7 days for all agented computers.
+Event
+| where TimeGenerated > ago(7d)
+| where  EventLog == "System" and Source == "User32" and EventID == 1074
+| search "shutdown"
+| sort by TimeGenerated desc 
+| project TimeGenerated, Computer
