@@ -1,0 +1,15 @@
+//Checking to see if a table (or tables) exist or not
+
+let hasNonEmptyTable = (T:string, T2:string) 
+{ 
+   toscalar( 
+   union isfuzzy=true 
+   ( table(T) | take 1 | count as Count ),
+   ( table(T2) | take 1 | count as Count),
+   (print Count=0) 
+   | summarize sum(Count) 
+   ) > 1
+};
+let TableName = 'AzureActivity';
+let TableName2 = 'SecurityEvent';
+print  IsPresent=iif(hasNonEmptyTable(TableName,TableName2 ), "present", "not present")
