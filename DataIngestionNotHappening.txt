@@ -1,5 +1,6 @@
 //Replace the table name with the name you want to track. Create an Analytics Rule and be notified if a table has not received new data in the last 3 days.
 //Seconds calculation for last_log is 60 x 60 x 24 x 3 = 259200
+//Make sure to set the Lookback to 14 days
 
 HuntingBookmark
 | where TimeGenerated > ago(30d)
