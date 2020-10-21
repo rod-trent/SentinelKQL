@@ -1,0 +1,6 @@
+//Detecting Agent problems
+
+_LogOperation
+| where Category == "Agent"
+| where Level == "Warning"
+| project TimeGenerated, Operation , Computer 
