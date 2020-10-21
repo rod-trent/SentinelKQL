@@ -5,4 +5,3 @@ HuntingBookmark
 | where TimeGenerated > ago(30d)
 | summarize Entries = count(), last_log = datetime_diff("second",now(), max(TimeGenerated))
 | where last_log >= 259200
-| summarize count(last_log)
