@@ -1,5 +1,16 @@
+//Standard query
+
 AzureActivity
 | where OperationNameValue contains "MICROSOFT.SECURITYINSIGHTS/ALERTRULES/WRITE"
 | where ActivityStatusValue == "Success"
 | extend Analytics_Rule_ID = tostring(parse_json(Properties).resource)
 | project TimeGenerated , CallerIpAddress , Caller , Analytics_Rule_ID
+
+//Analytics Rule
+
+AzureActivity
+| where OperationNameValue contains "MICROSOFT.SECURITYINSIGHTS/ALERTRULES/WRITE"
+| where ActivityStatusValue == "Success"
+| extend Analytics_Rule_ID = tostring(parse_json(Properties).resource)
+| extend AccountCustomEntity = Caller
+| extend IPCustomEntity = CallerIpAddress
