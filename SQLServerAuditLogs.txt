@@ -1,0 +1,6 @@
+//Azure SQL Server Audit Logs
+//Requires Azure SQL Server auditing enabled: https://azurecloudai.blog/2020/10/29/how-to-send-azure-sql-server-audit-logs-to-azure-sentinel/
+
+AzureDiagnostics 
+| where TimeGenerated > ago(24h) 
+| where Category == "SQLSecurityAuditEvents"
