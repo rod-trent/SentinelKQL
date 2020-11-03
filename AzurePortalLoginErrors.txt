@@ -1,0 +1,9 @@
+//Azure Portal login errors by User, IPAddr, City, State, code, and description
+
+SigninLogs
+| where TimeGenerated > ago(30d)
+| where AppDisplayName == "Azure Portal"
+| extend errorCode_ = tostring(Status.errorCode)
+| where errorCode_ != "0"
+| extend city_ = tostring(LocationDetails.city), state_ = tostring(LocationDetails.state)
+| project UserDisplayName, IPAddress, city_, state_, errorCode_, ResultDescription
