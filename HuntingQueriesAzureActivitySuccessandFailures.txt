@@ -1,0 +1,19 @@
+//Hunting query to detect Azure Activity successes and show who did it
+
+AzureActivity
+| where TimeGenerated > ago(1d)
+| where OperationNameValue has "Action"
+| where ActivityStatusValue == "Success"
+| extend AccountCustomEntity = Caller
+| extend IPCustomEntity = CallerIpAddress
+| extend URLCustomEntity = OperationNameValue
+
+//Hunting query to detect Azure Activity failures and show who did it
+
+AzureActivity
+| where TimeGenerated > ago(1d)
+| where OperationNameValue has "Action"
+| where ActivityStatusValue == "Failure"
+| extend AccountCustomEntity = Caller
+| extend IPCustomEntity = CallerIpAddress
+| extend URLCustomEntity = OperationNameValue
