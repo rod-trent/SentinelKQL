@@ -1,0 +1,5 @@
+//Looking for SIGRED
+
+Cisco_Meraki_CL
+| where ((record_type == "SIG" or record_type == "sig" or record_type == "RRSIG" or record_type == "rrsig") and network_protocol == "tcp") 
+| summarize dcount_query = dcount(query) by SourceIp | where dcount_query < 15
