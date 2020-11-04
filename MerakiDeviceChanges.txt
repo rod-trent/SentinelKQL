@@ -1,0 +1,4 @@
+//Looking for config changes on Meraki MX devices
+
+Cisco_Meraki_CL
+| where (* contains "ip http server" or * contains "ip https server" or * contains "kron policy-list" or * contains "kron occurrence" or * contains "policy-list" or * contains "access-list" or * contains "ip access-group" or * contains "archive maximum")
