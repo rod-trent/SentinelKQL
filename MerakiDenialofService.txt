@@ -1,0 +1,4 @@
+//Looking for denial of service
+
+Cisco_Meraki_CL
+| where (* contains "shutdown" or * contains "config-register 0x2100" or * contains "config-register 0x2142")
