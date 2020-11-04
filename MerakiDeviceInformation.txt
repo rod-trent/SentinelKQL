@@ -1,0 +1,4 @@
+//Looking for additional device information for Meraki MX devices
+
+Cisco_Meraki_CL
+| where (* contains "dir" or * contains "show processes" or * contains "show arp" or * contains "show cdp" or * contains "show version" or * contains "show ip route" or * contains "show ip interface" or * contains "show ip sockets" or * contains "show users" or * contains "show ssh" or * contains "show clock")
