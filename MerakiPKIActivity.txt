@@ -1,0 +1,4 @@
+//Looking for private key transaction or distribution of new certificates
+
+Cisco_Meraki_CL
+| where (* contains "crypto pki export" or * contains "crypto pki import" or * contains "crypto pki trustpoint")
