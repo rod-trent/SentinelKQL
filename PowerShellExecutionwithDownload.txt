@@ -1,17 +1,8 @@
 //Requires the Microsoft 365 Defender Connector
-//Finds PowerShell execution events that could involve a download
+//Identify PowerShell executions that could have initiated a download request
 
 union DeviceProcessEvents, DeviceNetworkEvents
 | where Timestamp > ago(7d)
 | where FileName in~ ("powershell.exe", "powershell_ise.exe")
-| where ProcessCommandLine has_any("WebClient",
-"DownloadFile",
-"DownloadData",
-"DownloadString",
-"WebRequest",
-"Shellcode",
-"http",
-"https")
-| project Timestamp, DeviceName, InitiatingProcessFileName,
-InitiatingProcessCommandLine,
-FileName, ProcessCommandLine, RemoteIP, RemoteUrl, RemotePort, RemoteIPType
+| where ProcessCommandLine has_any("WebClient", "DownloadFile", "DownloadData", "DownloadString", "WebRequest", "Shellcode", "http", "https")
+| project Timestamp, DeviceName, InitiatingProcessFileName, InitiatingProcessCommandLine, FileName, ProcessCommandLine, RemoteIP, RemoteUrl, RemotePort, RemoteIPType
