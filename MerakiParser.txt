@@ -1,4 +1,6 @@
-Intven_Meraki_CL
+//Available columns: ['host','devicename','type','hostname','src_ip','log_type','contents','dst_ip','src_port','dst_port','protocol','mac_address','request_type','uri','translated_src_ip','translated_dst_ip','pattern','translated_port','agent','message','@timestamp']
+
+Cisco_Meraki_CL
 | where TimeGenerated > ago(10d)
 | extend ParseFields  = split(RawData, ' ')
 | extend EventMonth   = tostring(ParseFields[0])
