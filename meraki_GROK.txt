@@ -1,0 +1,55 @@
+input {
+file {
+    path => "/var/log/meraki.log"
+  }
+}
+filter{		
+	grok {
+		#---urls---
+		match => [ "message", "%{CISCOTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host}  %{BASE16FLOAT:epoch_time} %{WORD:devicename} %{WORD:type} src=%{IP:src_ip}:%{INT:src_port} dst=%{IP:dst_ip}:%{INT:dst_port} mac=%{MAC:mac_address} request: %{WORD:request_type} %{URI:uri}"] 		
+
+		match => [ "message", "%{CISCOTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host}  %{BASE16FLOAT:epoch_time} %{WORD:devicename} %{WORD:type} src=%{IP:src_ip}:%{INT:src_port} dst=%{IP:dst_ip}:%{INT:dst_port} mac=%{MAC:mac_address} agent=%{WORD:agent} request: %{WORD:request_type} %{URI:uri}"]
+
+                match => [ "message", "%%{CISCOTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host} %{BASE16FLOAT:epoch_time} %{WORD:devicename} %{WORD:type} src=%{IP:src_ip}:%{INT:src_port} dst=%{IP:dst_ip}:%{INT:dst_port} mac=%{MAC:mac_address} agent='%{GREEDYDATA:agent}' request: %{WORD:request_type} %{URI:uri}"]
+		
+		#---
+		match => [ "message", "%{CISCOTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host}  %{BASE16FLOAT:epoch_time} %{WORD:type} src=%{IP:src_ip} dst=%{IP:dst_ip} protocol=%{WORD:protocol} sport=%{INT:src_port} dport=%{INT:dst_port} translated_src_ip=%{IP:translated_src_ip} translated_port=%{INT:translated_port}"]
+
+ 		match => [ "message", "%{CISCOTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host}  %{BASE16FLOAT:epoch_time} %{WORD:type} src=%{IP:src_ip} dst=%{IP:dst_ip} protocol=%{WORD:protocol} sport=%{INT:src_port} dport=%{INT:dst_port} translated_dst_ip=%{IP:translated_dst_ip} translated_port=%{INT:translated_port}"]
+
+ 		match => [ "message", "%{CISCOTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host}  %{BASE16FLOAT:epoch_time} %{WORD:type} src=%{IP:src_ip} dst=%{IP:dst_ip} protocol=%{WORD:protocol} translated_dst_ip=%{IP:translated_dst_ip}"]
+
+		match => [ "message", "%{CISCOTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host}  %{BASE16FLOAT:epoch_time} %{WORD:type} src=%{IP:src_ip} dst=%{IP:dst_ip} protocol=%{WORD:protocol} translated_src_ip=%{IP:translated_src_ip}"]
+
+		match => [ "message", "%{CISCOTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host}  %{BASE16FLOAT:epoch_time} %{WORD:devicename} %{WORD:type} src=%{IP:src_ip} dst=%{IP:dst_ip} protocol=%{WORD:protocol} sport=%{INT:src_port} dport=%{INT:dst_port} pattern: %{GREEDYDATA:pattern}"]
+
+
+ 		match => [ "message", "%{CISCOTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host}  %{BASE16FLOAT:epoch_time} %{WORD:devicename} %{WORD:type} src=%{IP:src_ip} dst=%{IP:dst_ip} mac=%{MAC:mac_address} protocol=%{WORD:protocol} sport=%{INT:src_port} dport=%{INT:dst_port} pattern: %{GREEDYDATA:pattern}"]
+
+		match => [ "message", "%{CISCOTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host}  %{BASE16FLOAT:epoch_time} %{WORD:devicename} %{WORD:type} src=%{IP:src_ip} dst=%{IP:dst_ip} mac=%{MAC:mac_address} protocol=%{WORD:protocol} type=%{INT:protocol_type} pattern: %{GREEDYDATA:pattern}"]
+
+		match => [ "message", "%{CISCOTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host}  %{BASE16FLOAT:epoch_time} %{WORD:devicename} %{WORD:type} src=%{IP:src_ip} dst=%{IP:dst_ip} protocol=%{WORD:protocol} type=%{INT:protocol_type} pattern: %{GREEDYDATA:pattern}"]
+
+		match => ["message", "%{SYSLOGTIMESTAMP:ciscotimestamp} %{SYSLOGHOST:host}  %{NUMBER:epoch_time} %{WORD:hostname} (?<log_type>[a-zA-Z0-9\-]+)([ ])?%{GREEDYDATA:contents}"]
+		overwrite => "host"
+    	}
+    	mutate {
+      		add_field => { "device_type" => "cisco-meraki" }
+    	}
+date {
+    match => [ "epoch_time","UNIX" ]
+    target => "@timestamp"
+    remove_field => [ "ciscotimestamp" ]
+    remove_field => [ "epoch_time" ]
+}
+}
+output {
+	microsoft-logstash-output-azure-loganalytics {
+
+	        workspace_id => "<yourworkspaceID>"
+        	workspace_key => "<yourworkspacekey>"
+	        custom_log_table_name => "CiscoMeraki"
+		key_names => ['host','devicename','type','hostname','src_ip','log_type','contents','dst_ip','src_port','dst_port','protocol','mac_address','request_type','uri','translated_src_ip','translated_dst_ip','pattern','translated_port','agent','message','@timestamp']
+    	}
+	stdout {}  
+}
