@@ -1,0 +1,6 @@
+//Ports accessed by Zerologon
+
+DeviceNetworkEvents
+| where RemotePort == 135 or RemotePort between (49670 .. 49680)
+| summarize (Timestamp, InitiatingProcessFileName, InitiatingProcessCommandLine, InitiatingProcessAccountSid)=arg_min(ReportId, Timestamp, InitiatingProcessFileName, InitiatingProcessCommandLine, InitiatingProcessAccountSid), TargetDevicePorts=make_set(RemotePort) by DeviceId, DeviceName, RemoteIP, RemoteUrl
+| project-rename SourceComputerName=DeviceName, SourceDeviceId=DeviceId, TargetDeviceIP=RemoteIP, TargetComputerName=RemoteUrl
