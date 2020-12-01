@@ -1,0 +1,8 @@
+//Get you geolocation for your SecurityEvents, using a publicly available IP geolocation file
+
+let geoData = externaldata
+(network:string,geoname_id:string,continent_code:string,continent_name:string,
+country_iso_code:string,country_name:string,is_anonymous_proxy:string,is_satellite_provider:string)
+[@"https://raw.githubusercontent.com/datasets/geoip2-ipv4/master/data/geoip2-ipv4.csv"] with (ignoreFirstRecord=true, format="csv");
+SecurityEvent
+| evaluate ipv4_lookup (geoData, IpAddress,  network, false)
