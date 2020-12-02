@@ -1,0 +1,9 @@
+//When an Analytics Rule is Deleted; Alert when an Analytics Rule is deleted and who did it.
+
+AzureActivity
+| where OperationNameValue contains "MICROSOFT.SECURITYINSIGHTS/ALERTRULES/DELETE"
+| where ActivityStatusValue == "Success"
+| extend Analytics_Rule_ID = tostring(parse_json(Properties).resource)
+| extend AccountCustomEntity = Caller
+| extend IPCustomEntity = CallerIpAddress
+| extend URLCustomEntity = Analytics_Rule_ID
