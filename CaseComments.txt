@@ -1,0 +1,5 @@
+//Who added case comments and to which case
+
+AzureActivity
+| where OperationName == "Create Case Comments"
+| project Caller, CallerIpAddress, OperationName, _ResourceId
