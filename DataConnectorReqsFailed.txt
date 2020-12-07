@@ -1,0 +1,5 @@
+//Data Connector Requirements failed
+
+AzureActivity
+| where OperationNameValue contains "dataconnectorscheckrequirements"
+| where ActivityStatusValue != "Success" and ActivityStatusValue != "Start"

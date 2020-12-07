@@ -1,0 +1,5 @@
+//Someone opened a Data Connector page
+
+AzureActivity
+| where OperationNameValue contains "dataconnectorscheckrequirements"
+| where ActivityStatusValue == "Start"
