@@ -1,0 +1,6 @@
+//Data Connector page access that failed authorization by caller, caller IP Address, and Operation name
+
+AzureActivity
+| where OperationNameValue contains "dataconnectorscheckrequirements"
+| where ActivityStatusValue == "Failed" and ActivitySubstatusValue == "Unauthorized"
+| project Caller, CallerIpAddress, OperationName
