@@ -1,0 +1,7 @@
+//NSG Changes by Resource and Who did it
+
+AzureActivity
+| where parse_json(Authorization).action == "Microsoft.Network/networkSecurityGroups/securityRules/write" and ActivityStatus == "Succeeded"
+| distinct Resource, Caller
+| extend AccountCustomEntity = Caller
+| extend URLCustomEntity = Resource
