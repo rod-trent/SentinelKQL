@@ -1,2 +1,6 @@
+//Monitor break-glass account usage
+
 SigninLogs
 | where OperationName == "Sign-in activity" and UserPrincipalName == "youremergencyaccount@domain.com"
+| extend AccountCustomEntity = UserPrincipalName
+| extend IPCustomEntity = IPAddress
