@@ -2,5 +2,5 @@
 
 SigninLogs
 | where ResultType == "50126" or ResultType == "50053"
-| extend HostCustomEntity = IPAddress
+| extend IPCustomEntity = IPAddress
 | extend AccountCustomEntity = UserDisplayName
