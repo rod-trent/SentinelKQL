@@ -1,0 +1,3 @@
+//Query a remote workspace for usage. Just enter your remote workspace.
+
+workspace("yourremoteworkspace").Usage
