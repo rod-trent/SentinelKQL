@@ -1,0 +1,5 @@
+// Usage by data types in a pie chart
+Usage
+| summarize count_per_type=count() by DataType
+| sort by count_per_type desc
+| render piechart
