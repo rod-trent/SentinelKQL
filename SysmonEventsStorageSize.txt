@@ -1,0 +1,7 @@
+//Sysmon Events by storage size by bytes
+
+Event
+| where Source == "Microsoft-Windows-Sysmon"
+| summarize count() by EventID
+| extend size_in_bytes = count_ * 500
+| order by size_in_bytes desc
