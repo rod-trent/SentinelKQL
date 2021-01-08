@@ -1,7 +1,7 @@
 //Create a whitelist of users who should be able to access Azure Sentinel, then check to see if unauthorized users have performed activities.
-//Replace useraccount/Caller with authorized accounts
+//Replace the users in the variable for AuthorizedUser with authorized accounts. Authorized account format is gleaned from AzureActivity/Caller
 
-let List = datatable(AuthorizedUser: string)["useraccount1/Caller1", "useraccount2/Caller2", "useraccount3/Caller3"];
+let List = datatable(AuthorizedUser: string)["user1@domain.com", "user2@domain.com", "user3@domain.com"];
 let timeframe = 1d;
 AzureActivity
 | where OperationNameValue has "MICROSOFT.SECURITYINSIGHTS"
