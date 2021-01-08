@@ -1,0 +1,25 @@
+//Create a whitelist of users who should be able to access Azure Sentinel, then check to see if unauthorized users have performed activities.
+//Replace useraccount/Caller with authorized accounts
+
+let List = datatable(AuthorizedUser: string)["useraccount1/Caller1", "useraccount2/Caller2", "useraccount3/Caller3"];
+let timeframe = 1d;
+AzureActivity
+| where OperationNameValue has "MICROSOFT.SECURITYINSIGHTS"
+| where ActivityStatusValue == "Success"
+| where CategoryValue == "Administrative"
+| join kind= leftanti (
+    List
+    | project Caller = tolower(AuthorizedUser)
+    )
+    on Caller
+| extend AccountCustomEntity = Caller
+| extend IPCustomEntity = CallerIpAddress
+
+
+| join kind= leftanti (
+    List
+    | project SubjectUserName = tolower(AuthorizedUser)
+    )
+    on SubjectUserName
+| project TimeGenerated, Computer, Account, SubjectUserName, SubjectDomainName, TargetAccount, EventID, Activity
+| extend timestamp = TimeGenerated, HostCustomEntity = Computer, AccountCustomEntity = Account
