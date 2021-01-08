@@ -2,3 +2,4 @@
 SecurityEvent
 | summarize count() by Activity, EventID
 | extend size_in_bytes = count_ * 500
+| order by count_ desc
