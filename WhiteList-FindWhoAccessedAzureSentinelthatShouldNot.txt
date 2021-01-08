@@ -14,12 +14,3 @@ AzureActivity
     on Caller
 | extend AccountCustomEntity = Caller
 | extend IPCustomEntity = CallerIpAddress
-
-
-| join kind= leftanti (
-    List
-    | project SubjectUserName = tolower(AuthorizedUser)
-    )
-    on SubjectUserName
-| project TimeGenerated, Computer, Account, SubjectUserName, SubjectDomainName, TargetAccount, EventID, Activity
-| extend timestamp = TimeGenerated, HostCustomEntity = Computer, AccountCustomEntity = Account
