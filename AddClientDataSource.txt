@@ -1,0 +1,6 @@
+//Identifies who added new Datasources to the client configuration for the Log Analytics workspace
+
+AzureActivity
+| where OperationNameValue has "DATASOURCES/WRITE"
+| where ResourceProviderValue has "MICROSOFT.OPERATIONALINSIGHTS"
+| project TimeGenerated, Caller, CallerIpAddress
