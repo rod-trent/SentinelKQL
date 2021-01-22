@@ -1,0 +1,10 @@
+//Just a simple KQL query to use as a template to use a Watchlist to show where something is NOT in the Watchlist
+
+let watchlist = _GetWatchlist("Your Watchlist Alias")
+| project IP;
+let timeframe = 1d;
+let threshold = 15;
+TableName
+| where TimeGenerated >= ago(timeframe)
+| where ip !in (watchlist)
+| project user, ip, port, SyslogMessage, EventTime
