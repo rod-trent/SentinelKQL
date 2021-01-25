@@ -1,0 +1,14 @@
+//Update Compliance with Barchart
+
+Update
+| join UpdateSummary on Computer
+| where UpdateState != 'Installed'
+| extend Resource = Computer
+| extend IsUpdateNeeded = UpdateState
+| extend UpdateTitle = Title
+| extend UpdateType = Classification
+| extend KB = KBID
+| distinct Computer, OsVersion, UpdateState, Title, Classification, KBID
+| sort by Computer asc 
+| summarize count() by Computer
+| render barchart 
