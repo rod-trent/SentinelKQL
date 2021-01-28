@@ -2,5 +2,5 @@
 //Myself and Brian Barrington were schooled by Clive Watson on this one :)
 
 SigninLogs
-| summarize a=countif(ResultType == 16000), b=countif(ResultType !=16000)
-| extend percent =  a * b /100
+| summarize ErrorCount=countif(ResultType == 16000 or ResultType == 50140), TotalCount=countif(isnotempty(ResultType))
+| extend percent = ((toreal(ErrorCount) / toreal(TotalCount))*100)
