@@ -1,0 +1,6 @@
+//Compare a count of total records in a table for the last 24h to the count of records in the same table with a specific property value to get a %
+//Myself and Brian Barrington were schooled by Clive Watson on this one :)
+
+SigninLogs
+| summarize a=countif(ResultType == 16000), b=countif(ResultType !=16000)
+| extend percent =  a * b /100
