@@ -1,0 +1,7 @@
+//When UEBA was enabled and by who
+
+AzureActivity
+| where Properties_d has "microsoft.securityinsights/ueba"
+| where OperationNameValue == "MICROSOFT.SECURITYINSIGHTS/SETTINGS/WRITE"
+| extend WhoDidIt = Caller
+| project WhoDidIt, CallerIpAddress, EventSubmissionTimestamp
