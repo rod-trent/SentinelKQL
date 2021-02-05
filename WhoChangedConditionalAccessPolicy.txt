@@ -1,0 +1,6 @@
+//Reporting when a Conditional Access Policy is updated and who did it
+
+AuditLogs
+| where OperationName == "Update policy"
+| extend Person = tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName)
+| project Person
