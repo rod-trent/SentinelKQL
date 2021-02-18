@@ -1,0 +1,6 @@
+//One way to find out when an Azure Sentinel instance is created is to monitor when the Fusion Analytics Rules is created. Fusion is enabled by default when Azure Sentinel is stood up.
+
+AzureActivity
+| where parse_json(Properties).resource has "builtinfusion"
+| where ActivitySubstatusValue =~ "created"
+| project TimeGenerated, Caller, CallerIpAddress, ResourceGroup
