@@ -1,0 +1,22 @@
+//Extract IP addresses from SecurityAlerts
+//Author: Randy Pargman
+SecurityAlert 
+// First get lists of IP addresses from ExtendedProperties
+| extend properties = parse_json(ExtendedProperties)
+| extend IP_list = split(tostring(properties["IP Addresses"]), ",")
+| project IP_list
+| where isnotempty(IP_list) 
+| summarize make_set(IP_list)
+| mv-expand set_IP_list // get each IP on its own row
+| where isnotempty(set_IP_list)
+| project IP = tostring(set_IP_list)
+// Now get every IP address from Entities that are type "ip"
+| union (SecurityAlert 
+| extend Entities = parse_json(Entities)
+| project Entities
+| mv-expand Entities
+| extend EType = tostring(Entities.Type)
+| where EType == "ip"
+| extend IP = tostring(Entities.Address)
+| project IP)
+| order by IP
