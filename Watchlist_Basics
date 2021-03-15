@@ -1,0 +1,24 @@
+//Watchlist as a variable, in list
+let watchlist = (_GetWatchlist('FeodoTracker') | project DstIP);
+Heartbeat
+| where ComputerIP in (watchlist)
+
+//Watchlist as a variable, not in list
+let watchlist = (_GetWatchlist('FeodoTracker') | project DstIP);
+Heartbeat
+| where ComputerIP !in (watchlist)
+
+
+//Watchlist inline with the query
+Heartbeat
+| where ComputerIP in ( 
+    (_GetWatchlist('FeodoTracker')
+    | project DstIP)
+)
+
+//Watchlist not inline with the query
+Heartbeat
+| where ComputerIP !in ( 
+    (_GetWatchlist('FeodoTracker')
+    | project DstIP)
+)
