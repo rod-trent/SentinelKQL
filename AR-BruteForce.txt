@@ -1,4 +1,4 @@
-//Monitor for Brute Force attach
+//Monitor for Brute Force attack
 
 SigninLogs
 | where ResultType == "50126" or ResultType == "50053"
