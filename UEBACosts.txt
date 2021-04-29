@@ -1,0 +1,7 @@
+union withsource=TableName1 *
+| where TimeGenerated > ago(30d) //In the last 30 days
+| summarize Entries = count(), Size = sumif(_BilledSize, _IsBillable == true), last_log = datetime_diff("second", now(), max(TimeGenerated)), estimate  = sumif(_BilledSize, _IsBillable == true)  by TableName1, _IsBillable
+| project ['Table Name'] = TableName1, ['Table Size'] = Size, ['% of Total GiB'] = (Size / (1024 * 1024 * 1024)) / 10.04 * 100, ['IsBillable'] = _IsBillable, ['Last Record Received'] =  last_log, ['Estimated Table Price'] =  (estimate / (1024 * 1024 * 1024)) * 4.0 //Cost may be different. Then, alter the 4.0
+| where ['Table Name'] == "BehaviorAnalytics" or ['Table Name'] == "IdentityInfo" or ['Table Name'] == "UserAccessAnalytics" or ['Table Name'] == "UserPeerAnalytics" //The four data tables utilized by UEBA
+| serialize TotalCost=row_cumsum(['Estimated Table Price']) //This starts at the bottom result row and adds all table prices for a final TotalCost value at the top
+| order by ['Table Size']  desc
