@@ -1,0 +1,5 @@
+AzureActivity
+| where OperationNameValue contains "MICROSOFT.AUTHORIZATION/POLICYEXEMPTIONS"
+| where ActivityStatusValue == "Start" or ActivityStatusValue == "Success"
+| extend resource_ = tostring(parse_json(Properties).resource)
+| project Caller, CallerIpAddress, resource_
