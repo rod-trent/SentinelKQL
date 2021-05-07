@@ -1,0 +1,7 @@
+//Incidents created between a time range in a chart
+
+SecurityIncident 
+| where CreatedTime between (datetime(2021-04-01) .. datetime(2021-04-30))
+| summarize arg_max(TimeGenerated, Status, Severity, Owner, AdditionalData,CreatedTime) by IncidentNumber
+| summarize count() by bin(CreatedTime, 1h)
+| render columnchart 
