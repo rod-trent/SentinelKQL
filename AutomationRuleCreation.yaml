@@ -1,0 +1,5 @@
+//Who created an Automation Rule
+
+AzureActivity
+| where OperationNameValue == "MICROSOFT.SECURITYINSIGHTS/AUTOMATIONRULES/WRITE"
+| project TimeGenerated, Caller, CallerIpAddress
