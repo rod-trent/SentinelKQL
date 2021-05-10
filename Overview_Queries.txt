@@ -1,0 +1,18 @@
+//The following is the query that produces the 'Recent Incidents' display on the Overview page
+
+let startTime = datetime(2021-05-07T06:47:22.396Z); 
+let endTime = datetime(2021-05-09T06:47:22.396Z); 
+let binSize=1h;
+range TimeGenerated from startTime to endTime step binSize
+| summarize by bin_at(TimeGenerated, binSize, endTime) 
+| join kind=fullouter (SecurityAlert | where ProviderName == 'ASI Scheduled Alerts' or ProviderName == 'CustomAlertRule' 
+| summarize Count=count() by bin_at(TimeGenerated, binSize, endTime), DisplayName) on TimeGenerated 
+| project Count=iff(isnull(Count), 0, Count), TimeGenerated, DisplayName, Type = "SecurityAlert"
+| order by TimeGenerated asc
+
+
+//The following is the query that produces the 'Events and alerts overtime' dispaly on the Overview page
+
+search * 
+| where not(Type == 'SecurityAlert' and (ProviderName == 'ASI Scheduled Alerts' or ProviderName == 'CustomAlertRule')) 
+| summarize Count=count() by Type, bin_at(TimeGenerated, 1h , datetime(2021-05-09T06:47:22.396Z))
