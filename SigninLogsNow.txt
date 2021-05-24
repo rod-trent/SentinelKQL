@@ -1,0 +1,9 @@
+//
+
+
+SigninLogs
+| where TimeGenerated >= ago(24h)
+| where ResultType == 0 and UserPrincipalName !contains "yourdomainname" 
+| project UserPrincipalName, AppDisplayName, IPAddress 
+| summarize count() by UserPrincipalName, AppDisplayName, IPAddress 
+| where count_ < 2
