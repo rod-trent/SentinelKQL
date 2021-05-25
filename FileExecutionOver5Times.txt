@@ -1,0 +1,5 @@
+//Locating a file that was executed more than 5 times
+
+search in (SecurityEvent) EventID == 4688 and "<yourfile.exe>" 
+| summarize ExecutionCount = count() by Computer 
+| limit 500000 | where ExecutionCount > 5
