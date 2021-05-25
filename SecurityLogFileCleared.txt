@@ -1,0 +1,4 @@
+//Computers where the Security log file has been cleared
+
+search in (SecurityEvent) EventID == 1102 
+| summarize LogClearedCount = count() by Computer | limit 500000
