@@ -1,0 +1,4 @@
+//Accounts that logged on remotely to specified computer, and how many times
+
+search in (SecurityEvent) EventID == 4624 and (LogonTypeName == "3 - Network" or LogonTypeName == "10 - RemoteInteractive") and Computer == "<yourcomputername>" 
+| summarize RemoteLogonCount = count() by Account
