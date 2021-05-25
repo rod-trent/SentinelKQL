@@ -1,0 +1,4 @@
+//All processes executed and how many times
+
+search in (SecurityEvent) EventID == 4688 
+| summarize ExecutionCount = count() by NewProcessName
