@@ -1,0 +1,8 @@
+// Last time a Data Connector received data
+
+union withsource=TableName1 *
+| where TimeGenerated > ago(2d)
+| project TimeGenerated, TableName1, DeviceVendor,ProviderName
+| summarize last_log = datetime_diff("second", now(), max(TimeGenerated)),last_event_received = max(TimeGenerated) by TableName1, DeviceVendor,ProviderName
+| project ['Table Name'] = TableName1, ['Latest Record Created'] = last_log, ['Time'] = last_event_received, DeviceVendor, ProviderName
+| order by Time desc
