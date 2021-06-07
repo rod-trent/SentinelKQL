@@ -1,0 +1,6 @@
+//With AzureActivity connected, check to see who closed out an Incident in ASC/Defender
+
+AzureActivity
+| sort by TimeGenerated desc 
+| where OperationNameValue == "MICROSOFT.SECURITY/LOCATIONS/ALERTS/DISMISS/ACTION" and ActivityStatusValue == "Success"
+| project Caller, CallerIpAddress
