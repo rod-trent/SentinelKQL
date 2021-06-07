@@ -1,0 +1,6 @@
+//This KQL query uses the UEBA data enrichment values to show Dormant user accounts.
+//See the following for the explanation: https://azurecloudai.blog/2021/06/07/how-to-use-the-ueba-enrichments-in-azure-sentinel/
+
+BehaviorAnalytics
+| where UsersInsights.IsDormantAccount == true
+| project TimeGenerated, UserName, ActionType
