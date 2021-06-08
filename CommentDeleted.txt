@@ -1,0 +1,7 @@
+//Query to determine who deleted a comment from an Incident
+
+AzureActivity
+| where OperationNameValue contains "MICROSOFT.SECURITYINSIGHTS/INCIDENTS/COMMENTS/DELETE"
+| where ActivityStatusValue == "Success"
+| extend clientIpAddress_ = tostring(parse_json(HTTPRequest).clientIpAddress)
+| project Caller, clientIpAddress_
