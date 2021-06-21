@@ -1,0 +1,6 @@
+//Monitoring AZCopy activity
+
+SecurityEvent 
+| where Activity == "4688 - A new process has been created." or Activity == "8002 - A process was allowed to run."
+| where NewProcessName contains "azcopy.exe"
+| project SubjectAccount, NewProcessName, NewProcessId
