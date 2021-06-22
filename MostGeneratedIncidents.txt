@@ -1,0 +1,7 @@
+//Display the Incidents generated in the last 90 days, but show which ones are generated the most. Good data to help tune your SOC responses and automation.
+
+SecurityIncident
+| where TimeGenerated >= (90d)
+| summarize count() by Title
+| distinct Title, count_
+| order by count_ desc 
