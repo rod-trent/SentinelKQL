@@ -1,0 +1,6 @@
+//Who created a new policy against which resource group and the type of policy created
+
+AzureActivity
+| where ResourceProviderValue == "MICROSOFT.POLICYINSIGHTS"
+| where ActivitySubstatusValue == "Created"
+| project Caller, CallerIpAddress, ResourceGroup, Type
