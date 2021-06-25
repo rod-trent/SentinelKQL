@@ -1,0 +1,5 @@
+//This will produce when links have been created in Teams chats. Will not show actual link, though. Still working on that.
+
+OfficeActivity
+| where OfficeWorkload =~ "MicrosoftTeams"
+| where Operation in ("MessageCreatedHasLink", "MessageEditedHasLink")
