@@ -1,0 +1,5 @@
+//Starting to develop a SOC "Threat Score." Based on Number of open Incidents + Numerical values for Status + Numerical values for Severity. A work in progress.
+
+SecurityIncident
+| where Status != "Closed"
+| summarize count() by Severity, Status
