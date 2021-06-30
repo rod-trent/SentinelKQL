@@ -1,0 +1,5 @@
+//PrintNightmare CVE-2021-1675
+
+DeviceFileEvents
+| where Timestamp > ago(1d)
+| where FolderPath matches regex @'\\Windows\\System32\\spool\\drivers\\x64\\3\\old\\([^1|2].*\.dll)|\\(MyExploit|evil|addCube|rev|rev2|main64|mimilib)\.dll$'
