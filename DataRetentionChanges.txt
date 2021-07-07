@@ -1,0 +1,6 @@
+//This query produces results that show when data retention on a LAW was changed and who did it
+
+union Operation 
+| where OperationStatus == "Succeeded"
+| where OperationCategory == "Workspace Configuration"
+| project TimeGenerated, Detail
