@@ -1,0 +1,5 @@
+//KQL query for the Kaseya REvil detection. Can be used as an Analytics Rule or Hunting query.
+
+SecurityEvent 
+| where EventID == 4688  
+| where ((CommandLine contains @'C:\\Windows\\cert.exe' or CommandLine contains 'Set-MpPreference -DisableRealtimeMonitoring $true -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableScriptScanning $true -EnableControlledFolderAccess Disabled -EnableNetworkProtection AuditMode -Force -MAPSReporting Disabled' or CommandLine contains @'del /q /f c:\\kworking\\agent.crt' or CommandLine contains 'Kaseya VSA Agent Hot-fix' or CommandLine contains @'\\AppData\\Local\\Temp\\MsMpEng.exe') and (FilePath == @'C:\\Windows\\MsMpEng.exe' or FilePath == @'C:\\Windows\\cert.exe' or FilePath == @'C:\\kworking\\agent.exe'))
