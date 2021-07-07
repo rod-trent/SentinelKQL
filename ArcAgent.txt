@@ -1,0 +1,6 @@
+//Systems connected using the AMA agent with Azure Arc
+
+Heartbeat
+| where ResourceProvider == "Microsoft.HybridCompute"
+| extend AgentVersion = Version
+| project Computer, ComputerIP, OSName
