@@ -1,0 +1,10 @@
+//Email forwarding
+
+OfficeActivity
+| where OfficeWorkload == "Exchange"
+| where Operation == "Set-Mailbox"
+| extend Name_ = tostring(parse_json(Parameters)[2].Name)
+| where Name_ == "DeliverToMailboxAndForward"
+| extend ForwardingSMTP_Value_ = tostring(parse_json(Parameters)[1].Value)
+| where ForwardingSMTP_Value_ != ""
+| project TimeGenerated, ForwardingSMTP_Value_, Name_, UserId
