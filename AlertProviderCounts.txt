@@ -1,0 +1,4 @@
+//Simple query to show the provider where your alerts are coming from most
+
+SecurityIncident
+| summarize count() by ProviderName
