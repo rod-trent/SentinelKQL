@@ -1,0 +1,11 @@
+//Throughput for the Common Security Log
+
+let Now = now();
+            (range TimeGenerated from ago(7d) to Now-1d step 1d
+| extend Count = 0
+| union isfuzzy=true
+(CommonSecurityLog
+| summarize Count = count() by bin_at(TimeGenerated, 1m, Now))
+| summarize Count=max(Count) by bin_at(TimeGenerated, 1m, Now)
+| sort by TimeGenerated
+| project Value = iff(isnull(Count), 0, Count), Time = TimeGenerated, Legend = "Common Security Log")
