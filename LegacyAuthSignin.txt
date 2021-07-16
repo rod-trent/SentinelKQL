@@ -1,0 +1,8 @@
+//Sign in Legacy authentication Azure AD
+
+SigninLogs
+| where TimeGenerated > ago(2d)
+| where not(ClientAppUsed has "Mobile Apps and Desktop clients")
+| where not(ClientAppUsed has "Browser")
+| where (ClientAppUsed has "Exchange Web Services")
+| summarize arg_max(TimeGenerated,*) by UserPrincipalName
