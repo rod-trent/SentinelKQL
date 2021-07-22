@@ -1,0 +1,8 @@
+//Joins DnsEvents and DnsInventory to show computer, domain, and IP of device attempts
+
+DnsEvents
+| where TimeGenerated >= (30d)
+| join DnsInventory on Computer
+| where isnotempty(DomainName)
+| sort by TimeGenerated
+| summarize Attempts = count() by TimeGenerated, Computer, ClientIP, DomainName
