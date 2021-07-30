@@ -1,0 +1,7 @@
+//Show each separate login per person and their location and IP
+
+SigninLogs
+| extend city_ = tostring(LocationDetails.city)
+| extend state_ = tostring(LocationDetails.state)
+| extend countryOrRegion_ = tostring(LocationDetails.countryOrRegion)
+| distinct TimeGenerated, Identity, city_, state_, countryOrRegion_, IPAddress
