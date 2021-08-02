@@ -1,0 +1,4 @@
+//With UEBA enabled, look for users that have not logged in
+
+BehaviorAnalytics
+| where UsersInsights.IsDormantAccount == true
