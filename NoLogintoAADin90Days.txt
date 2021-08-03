@@ -1,0 +1,9 @@
+//AAD users that haven’t performed a successful/failed login to AAD in the last 90 days
+
+IdentityInfo
+| where TimeGenerated > ago(30d)
+| summarize arg_max(TimeGenerated, *) by AccountObjectId
+| join kind=leftanti (
+    SigninLogs
+    | where TimeGenerated > ago(90d)
+    ) on $left.AccountObjectId == $right.UserId
