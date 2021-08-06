@@ -1,0 +1,5 @@
+//Parser for getting the EventID from the AlertContext column in the Alert table
+
+Alert
+| parse-where AlertContext with * "EventNumber>" EventNo "<" *
+| project EventNo
