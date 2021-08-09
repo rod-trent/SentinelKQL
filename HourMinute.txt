@@ -1,0 +1,4 @@
+//Convert time into hour or min
+
+print TimeTaken=time(10:11:02)
+| extend TimeTakenInMins = TimeTaken / 1m
