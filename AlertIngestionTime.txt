@@ -1,0 +1,5 @@
+//Tracking how long it takes an Alert to ingest. Replace the Table (SecurityAlert) with the table you want information on.
+
+SecurityAlert
+| summarize by ProviderName, AlertName,Minutes_ = datetime_diff("minute",ingestion_time(), TimeGenerated)
+| order by Minutes_ desc
