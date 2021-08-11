@@ -1,4 +1,4 @@
-//Tracking how long it takes an Alert to ingest. Replace the Table (SecurityAlert) with the table you want information on.
+//Tracking how long it takes an Alert to ingest.
 
 SecurityAlert
 | summarize by ProviderName, AlertName,Minutes_ = datetime_diff("minute",ingestion_time(), TimeGenerated)
