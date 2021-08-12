@@ -1,4 +1,4 @@
-//Look for potential instances of BitLocker used to encrypt data maliciously
+//Look for potential instances of BitLocker used to encrypt data maliciously. Defender for Endpoint connected to Sentinel.
 
 DeviceProcessEvents
 | where FileName =~ "reg.exe" 
