@@ -1,0 +1,7 @@
+//Look for potential instances of BitLocker used to encrypt data maliciously
+
+DeviceProcessEvents
+| where FileName =~ "reg.exe" 
+    and ProcessCommandLine has "EnableBDEWithNoTPM"
+    and (ProcessCommandLine has "true" or ProcessCommandLine contains "1")
+| where InitiatingProcessCommandLine has_all (@"C:\Windows\", ".bat")
