@@ -1,0 +1,8 @@
+//Attempts to stop System Restore and prevent the system from creating restore point
+
+DeviceProcessEvents
+| where InitiatingProcessFileName =~ 'rundll32.exe'   
+and InitiatingProcessCommandLine !contains " " and InitiatingProcessCommandLine != ""  
+and FileName in~ ('schtasks.exe')  
+and ProcessCommandLine has 'Change' and ProcessCommandLine has 'SystemRestore' 
+and ProcessCommandLine has 'disable'
