@@ -1,4 +1,4 @@
-//DarkSide ransomware behavior
+//DarkSide ransomware behavior. Defender for Endpoint connected to Sentinel.
 
 DeviceProcessEvents 
 | where FileName =~ "rundll32.exe" 
