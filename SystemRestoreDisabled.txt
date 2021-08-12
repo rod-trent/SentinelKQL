@@ -1,4 +1,4 @@
-//Attempts to stop System Restore and prevent the system from creating restore point
+//Attempts to stop System Restore and prevent the system from creating restore point. Defender for Endpoint connected to Sentinel.
 
 DeviceProcessEvents
 | where InitiatingProcessFileName =~ 'rundll32.exe'   
