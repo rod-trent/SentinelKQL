@@ -1,0 +1,5 @@
+//Looking for suspicious posts
+
+W3CIISLog
+| where csUriStem == "/autodiscover/autodiscover.json"
+| where csUriQuery has "PowerShell" | where csMethod == "POST"
