@@ -1,0 +1,14 @@
+//Show accounts that haven't logged in for 50 days
+
+let IdleAccountTimeOut = 50d;
+let timeHorizon = 90d;
+IdentityInfo
+| where TimeGenerated >=ago(timeHorizon)
+| extend TableName = "IdentityInfo"
+| summarize dcount(AccountObjectId) by AccountObjectId, AccountUPN
+| join kind=anti (SigninLogs
+| where TimeGenerated >= ago(IdleAccountTimeOut)
+| where ResultType==0
+| extend TableName = "SignInLogs"
+//| summarize dcount(UserPrincipalName) by UserPrincipalName
+) on $left.AccountObjectId == $right.UserId
