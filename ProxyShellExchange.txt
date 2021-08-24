@@ -1,0 +1,5 @@
+//Check the Exchange Server for ProxyShell vulnerability scanning
+
+W3CIISLog
+| where csUriStem == "/autodiscover/autodiscover.json"
+| where csUriQuery has "PowerShell" | where csMethod == "POST" 
