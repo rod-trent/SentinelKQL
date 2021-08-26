@@ -1,0 +1,5 @@
+//Parses out the confidence score for the Anomali feeds
+
+ThreatIntelligenceIndicator
+| parse-where ThreatType with * "confidence-" Confidence_Score
+| project NetworkIP, ThreatType, Confidence_Score, SourceSystem
