@@ -1,0 +1,3 @@
+CommonSecurityLog 
+| where DeviceEventClassID contains "GNRL_EV_VIRUS_FOUND"
+| project  Computer, DestinationUserName,  DestinationHostName, FilePath, Activity, Message, LogSeverity
