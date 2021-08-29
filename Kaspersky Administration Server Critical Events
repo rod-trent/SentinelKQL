@@ -1,0 +1,5 @@
+//Kaspersky Administration Server critical events
+//https://support.kaspersky.com/KSC/CloudConsole/en-US/177080.htm
+CommonSecurityLog
+| where DeviceEventClassID in ('KLSRV_HOST_OUT_CONTROL', 'GNRL_EV_VIRUS_OUTBREAK', 'KLSRV_EV_LICENSE_CHECK_MORE_110', 'KLSRV_HOST_STATUS_CRITICAL', 'KLSRV_LICENSE_BLACKLISTED', 'KLSRV_EV_LICENSE_SRV_LIMITED_MODE', 'KLSRV_EV_LICENSE_SRV_EXPIRE_SOON', 'KLSRV_CERTIFICATE_EXPIRED', 'KLSRV_SEAMLESS_UPDATE_REVOKED')
+| project TimeGenerated, DestinationHostName, DeviceEventClassID, Message, Activity
