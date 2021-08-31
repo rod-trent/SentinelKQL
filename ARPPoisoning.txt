@@ -1,0 +1,7 @@
+//Looking for systems that have two different IP addresses that share the same MAC address for potential ARP Poisoning.
+//Defender for Endpoint is required for the DeviceNetworkInfo table.
+
+DeviceNetworkInfo
+| where isnotempty(IPv4Dhcp)
+| distinct IPv4Dhcp, MacAddress, NetworkAdapterName, DeviceName
+| summarize Count=count() by IPv4Dhcp, MacAddress, NetworkAdapterName, DeviceName
