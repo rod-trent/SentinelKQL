@@ -2,5 +2,6 @@
 
 Heartbeat
 | where ResourceProvider == "Microsoft.HybridCompute"
-| extend AgentVersion = Version
-| project Computer, ComputerIP, OSName
+| extend Agent_Version = Version
+| distinct Computer, Agent_Version
+| order by Computer
