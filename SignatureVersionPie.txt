@@ -1,0 +1,6 @@
+//Creates a PIE chart showing the threat protection signature versions.
+
+ProtectionStatus
+| project DeviceName, ThreatStatus, TenantId, ProtectionStatus, SignatureVersion, ScanDate, ProtectionStatusDetails
+| summarize sig_count=count() by SignatureVersion
+| render piechart by sig_count
