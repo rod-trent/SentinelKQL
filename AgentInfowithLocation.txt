@@ -1,4 +1,4 @@
-//Queries to locate installed LA agents and if on-prem of in Azure
+//Queries to locate installed LA agents and if on-prem or in Azure
 
 Heartbeat
 | where Category == "Direct Agent"
