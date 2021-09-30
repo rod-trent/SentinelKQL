@@ -1,0 +1,7 @@
+//Queries to locate installed agents and if on-prem of in Azure
+
+Heartbeat
+| where Category == "Direct Agent"
+| extend Cloud = ResourceProvider == "Microsoft.Compute"
+| extend Onprem = ResourceProvider == "Microsoft.HybridCompute"
+| distinct Computer, ResourceType, Cloud, Onprem
