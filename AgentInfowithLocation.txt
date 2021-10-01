@@ -1,7 +1,9 @@
 //Queries the Heartbeat table to locate installed LA agents and if on-prem or in Azure
 
 Heartbeat
+| where TimeGenerated >= (90d)
 | where Category == "Direct Agent"
+| where isnotempty(ResourceType)
 | extend Cloud = ResourceProvider == "Microsoft.Compute"
 | extend Onprem = ResourceProvider == "Microsoft.HybridCompute"
 | distinct Computer, ResourceType, Cloud, Onprem
