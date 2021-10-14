@@ -21,3 +21,10 @@ print AvgSizePerRecordInKb=AvgSizeInKb
 DeviceEvents
 | union DeviceFileEvents, DeviceInfo, DeviceNetworkInfo, DeviceProcessEvents, DeviceNetworkEvents, DeviceRegistryEvents, DeviceLogonEvents, DeviceImageLoadEvents, DeviceFileCertificateInfo
 | count
+
+
+//Using the estimate_data_size to get Log sizes for Defender for Endpoint
+DeviceEvents
+| union DeviceFileEvents, DeviceInfo, DeviceNetworkInfo, DeviceProcessEvents, DeviceNetworkEvents, DeviceRegistryEvents, DeviceLogonEvents, DeviceImageLoadEvents, DeviceFileCertificateInfo
+| project size = estimate_data_size(*)
+| summarize TableSizeInMB = sum(size)/1000/1000
