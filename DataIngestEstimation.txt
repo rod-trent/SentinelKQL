@@ -1,0 +1,23 @@
+//This solution looks at the average size per record in a table, then take that number and apply it to the logs you want to ingest.
+
+
+//Average size per record
+
+let TotalSizeInKb = toscalar( Usage
+| where TimeGenerated >= ago(30d)
+| summarize TotalSizeInKb=sum(Quantity*1024) by DataType
+| where DataType == "DeviceEvents"
+| project TotalSizeInKb
+);
+let NumOfRecords = toscalar( DeviceEvents
+| where TimeGenerated >= ago(30d)
+| summarize NumOfRecords=count() 
+);
+let AvgSizeInKb = todecimal(TotalSizeInKb / NumOfRecords);
+print AvgSizePerRecordInKb=AvgSizeInKb
+
+//Take the above number and apply to the total records for the sources you want to ingest
+
+DeviceEvents
+| union DeviceFileEvents, DeviceInfo, DeviceNetworkInfo, DeviceProcessEvents, DeviceNetworkEvents, DeviceRegistryEvents, DeviceLogonEvents, DeviceImageLoadEvents, DeviceFileCertificateInfo
+| count
