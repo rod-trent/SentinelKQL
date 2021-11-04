@@ -1,0 +1,7 @@
+//Number of new, open Incidents in the last 24 hours
+
+SecurityIncident
+| where TimeGenerated > ago(1d)
+| summarize arg_max(TimeGenerated, Status, Severity, Owner, AdditionalData) by IncidentNumber
+| where Status == "New"
+| summarize count() by Status
