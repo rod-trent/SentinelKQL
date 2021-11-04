@@ -1,0 +1,9 @@
+//Number of unassigned Incidents in Last 24 hours
+
+SecurityIncident
+| where TimeGenerated > ago(1d)
+| where ProviderName == "Azure Sentinel" // Commenting out this line provides SecurityIncidents from both Azure Sentinel and Microsoft 365 Defender Incidents.
+| summarize arg_max(TimeGenerated, Status, Severity, Owner, AdditionalData) by IncidentNumber
+| where Owner != "Unassigned"
+| where Status == "New" or Status == "Active"
+| summarize count() by Status
