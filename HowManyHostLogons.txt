@@ -1,0 +1,6 @@
+// Shows the count of logons per device
+
+SecurityEvent
+| where EventID == 4624
+| summarize LogonCount = count() by Computer
+| where LogonCount > 10
