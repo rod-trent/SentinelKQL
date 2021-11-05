@@ -1,0 +1,8 @@
+//Detects Mimikatz has been found and shows compromise host. Requires Microsoft Defender for Endpoint connection.
+
+SecurityAlert
+| where Tactics == "CredentialAccess"
+| where Entities contains "mimikatz"
+| where DisplayName == "Possible attempt to steal credentials" or AlertName == "Malicious credential theft tool execution detected"
+| where Status == "New"
+| distinct CompromisedEntity, TimeGenerated
