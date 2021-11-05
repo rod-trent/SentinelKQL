@@ -1,0 +1,26 @@
+//Discover new admin account activity 
+
+let starttime = 14d;
+  let endtime = 1d;
+  let historicalActivity=
+  OfficeActivity
+  | where TimeGenerated between(ago(starttime)..ago(endtime))
+  | where RecordType=="ExchangeAdmin" and UserType in ("Admin","DcAdmin")
+  | summarize historicalCount=count() by UserId;
+  let recentActivity = OfficeActivity
+  | where TimeGenerated > ago(endtime)
+  | where UserType in ("Admin","DcAdmin")
+  | summarize recentCount=count() by UserId;
+  recentActivity | join kind = leftanti (
+     historicalActivity
+  ) on UserId
+  | project UserId,recentCount
+  | order by recentCount asc, UserId
+  | join kind = rightsemi 
+  (OfficeActivity 
+  | where TimeGenerated >= ago(endtime) 
+  | where RecordType == "ExchangeAdmin" | where UserType in ("Admin","DcAdmin")) 
+  on UserId
+  | summarize StartTime = max(TimeGenerated), EndTime = min(TimeGenerated), count() by RecordType, Operation, UserType, UserId, OriginatingServer, ResultStatus
+  | extend timestamp = StartTime, AccountCustomEntity = UserId
+  | project AccountCustomEntity
