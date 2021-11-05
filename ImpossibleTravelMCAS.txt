@@ -1,0 +1,7 @@
+//MCAS connection required. Just shows all Impossible Travel alerts
+
+SecurityAlert 
+| where ProductName == "Microsoft Cloud App Security" 
+| summarize arg_max(TimeGenerated, *) by SystemAlertId 
+| where DisplayName == "Impossible travel activity" 
+| sort by TimeGenerated
