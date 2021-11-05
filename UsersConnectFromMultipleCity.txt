@@ -1,0 +1,8 @@
+//Reports users who have connected from more than 1 location
+
+AADNonInteractiveUserSignInLogs
+| where TimeGenerated > ago(1d)
+| extend City = parse_json(LocationDetails).city
+| summarize CountPerCity = dcount(tostring(City)) by UserPrincipalName
+| where CountPerCity > 2
+| order by CountPerCity desc
