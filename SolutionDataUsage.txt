@@ -1,4 +1,4 @@
-//Monitor data usage. Produces a piechart
+//Monitoring data usage by solution. Produces a piechart
 
 Usage 
 | where TimeGenerated > startofday(ago(31d))
