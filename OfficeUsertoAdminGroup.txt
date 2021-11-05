@@ -1,0 +1,4 @@
+//Office 365: Add a User to an Admin Group 
+
+OfficeActivity 
+| where ((Operation == "Add member to group") and (ResultStatus == "Success") and (ModifiedProperties contains "admin"))
