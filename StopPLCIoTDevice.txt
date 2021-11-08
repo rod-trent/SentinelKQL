@@ -1,0 +1,7 @@
+//Stop PLC Command for an IoT device
+
+SecurityAlert
+| where TimeGenerated > ago(7d)
+| where AlertName == "An S7 Stop PLC Command was Sent" 
+| extend SourceDeviceAddress_ = tostring(parse_json(ExtendedProperties).SourceDeviceAddress)
+| extend DestinationDeviceAddress_ = tostring(parse_json(ExtendedProperties).DestinationDeviceAddress)
