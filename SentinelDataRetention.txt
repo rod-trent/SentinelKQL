@@ -1,0 +1,14 @@
+//Must be run in Resource Graph Explorer to expose the resources table.
+
+
+resources
+| where type =~ 'microsoft.operationalinsights/workspaces' 
+| extend state = trim(' ', tostring(properties.provisioningState))
+		,sku   = trim(' ', tostring(properties.sku.name))
+        ,skuUpdate = trim(' ', tostring(properties.sku.lastSkuUpdate))
+		,retentionDays = trim(' ', tostring(properties.retentionInDays))
+		,dailyquotaGB  = trim(' ', tostring(properties.workspaceCapping.dailyQuotaGb))
+| extend dailyquotaGB = iif(dailyquotaGB !=-1.0, dailyquotaGB,"Not set")
+| extend skuUpdate    = iif(strlen(skuUpdate) > 0, skuUpdate,"Unknown")
+| extend sentinel     = iif(toint(retentionDays) < 90,"If you have Sentinel, you can change your retention to 90days (free)?","")
+| project ['Log Analytics Workspace Name']=id, ['Resource Group']=resourceGroup, location, ['Data Retention(days)']=retentionDays, ['Last known SKU update']=skuUpdate, ['Daily Data Cap']=dailyquotaGB, ['Licence']=sku,  ['Commitment Tier']=properties.sku.capacityReservationLevel, ['Notes'] = sentinel
