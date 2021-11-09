@@ -1,0 +1,7 @@
+//The cost of the Threat Intelligence table is nominal, but this query will show costs per month.
+
+Usage
+| where DataType == "ThreatIntelligenceIndicator"
+| where TimeGenerated > ago(90d)
+| summarize BillableDataGB = sum(Quantity) / 1000. by Year = tostring(bin(datepart("Year", TimeGenerated), 1)), Month = bin(datepart("Month", TimeGenerated), 1)
+| sort by Year, Month asc
