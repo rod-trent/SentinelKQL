@@ -1,0 +1,6 @@
+//Bookmark health
+
+HuntingBookmark
+| where TimeGenerated > ago(30d)
+| summarize last_log = datetime_diff("second",now(), max(TimeGenerated))
+| where last_log >= 259200
