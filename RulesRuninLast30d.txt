@@ -1,0 +1,6 @@
+//Analytics Rules that generated alerts (and how many) in the last 30 days
+
+SecurityAlert
+| where TimeGenerated >= (30d)
+| where ProviderName contains "ASI"
+| summarize count() by DisplayName
