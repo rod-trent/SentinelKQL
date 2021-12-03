@@ -1,0 +1,4 @@
+//Identifying possibly poor performing queries
+
+LAQueryLogs
+| where ResponseRowCount < 200 and ResponseDurationMs > 5000
