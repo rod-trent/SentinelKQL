@@ -1,0 +1,10 @@
+//Getting average EPS and estimated GB per table for the M365 Advanced tables. Run this in Advanced Hunting at security.microsoft.com
+
+
+let bytes_ = 500;
+union withsource=MDTables*
+| where Timestamp > startofday(ago(1d))
+| summarize count() by bin(Timestamp, 1m), MDTables
+| extend EPS = count_ /60
+|summarize avg(EPS), estimatedGBytes = (avg(EPS) * bytes_ ) / (1024*1024*1024) by MDTables
+| sort by toint(estimatedGBytes) desc
