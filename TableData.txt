@@ -1,0 +1,20 @@
+//Produces results for Table Size, Number of Table Entries, Size per Entry, If the table is billable or not, Last record that was received, and Estimated Table Price
+
+
+union withsource=TableName1 *
+| where TimeGenerated > ago(31d)
+| summarize
+    Entries = count(),
+    Size = sum(_BilledSize),
+    last_log = datetime_diff("second", now(), max(TimeGenerated)),
+    estimate  = sumif(_BilledSize, _IsBillable == true)
+    by TableName1, _IsBillable
+| project
+    ['Table Name'] = TableName1,
+    ['Table Size'] = Size,
+    ['Table Entries'] = Entries,
+    ['Size per Entry'] = 1.0 * Size / Entries,
+    ['IsBillable'] = _IsBillable,
+    ['Last Record Received'] =  last_log,
+    ['Estimated Table Price'] =  (estimate / (1024 * 1024 * 1024)) * 4.0
+| order by ['Table Size']  desc
