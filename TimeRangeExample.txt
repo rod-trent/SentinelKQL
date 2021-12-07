@@ -1,0 +1,6 @@
+//Example of setting time range between two values
+
+let StartTime=ago(24h);
+let StopTime=now();
+SecurityEvent
+| where TimeGenerated >StartTime and TimeGenerated <=StopTime
