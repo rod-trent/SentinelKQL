@@ -1,0 +1,8 @@
+//Example of using Pack All to put results into a single column. Can also be used with Extend operator
+
+
+let StartTime=ago(24h);
+let StopTime=now();
+SecurityEvent
+| where TimeGenerated >StartTime and TimeGenerated <=StopTime
+| project pack_all()
