@@ -1,0 +1,8 @@
+//Retrieves all non-US based logins
+
+SigninLogs
+| extend city_ = tostring(LocationDetails.city)
+| extend state_ = tostring(LocationDetails.state)
+| extend countryOrRegion_ = tostring(LocationDetails.countryOrRegion)
+| where countryOrRegion_ != "US"
+| distinct TimeGenerated, Identity, city_, state_, countryOrRegion_, IPAddress
