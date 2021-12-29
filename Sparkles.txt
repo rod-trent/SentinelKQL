@@ -1,0 +1,8 @@
+//Working with Emoji in queries. See https://cda.ms/3wh for Emoji code reference.
+
+ let L=14;
+range x from 1 to L step 1
+| project t=make_string(10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024, 10024)
+| summarize Sparkles=make_list(t)
+| project Sparkles=array_concat(pack_array(strcat(strrep(' ', L-1))), Sparkles)
+| project Happy_New_Year=strcat_array(Sparkles, '\n')
