@@ -1,0 +1,34 @@
+//Usage of datatable and make_list to create a silly glass
+
+let line1 = datatable (name: string)
+ [
+ "✨ ✨ ✨ ✨ ✨ ✨ ✨ ✨ ✨        " 
+ ];
+  let line2 = datatable (name: string)
+ [
+ "    ✨ ✨ ✨ ✨ ✨ ✨ ✨ ✨          " 
+ ];
+   let line3 = datatable (name: string)
+ [
+ "       ✨ ✨ ✨ ✨ ✨ ✨ ✨           " 
+ ];
+    let line4 = datatable (name: string)
+ [
+ "                      ✨✨               " 
+ ];
+     let line5 = datatable (name: string)
+ [
+ "                      ✨✨               " 
+ ];
+      let line6 = datatable (name: string)
+ [
+ "                      ✨✨               " 
+ ];
+       let line7 = datatable (name: string)
+ [
+ "       ✨ ✨ ✨ ✨ ✨ ✨ ✨           " 
+ ];
+ line1
+ | union line2, line3, line4, line5, line6, line7
+ | summarize mylist = make_list(name)
+ | project Happy_New_Year=strcat_array(mylist, '\n')
