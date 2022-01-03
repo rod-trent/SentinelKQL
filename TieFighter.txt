@@ -1,0 +1,27 @@
+//KQL query to display a Tie Figther (from Star Wars)
+
+ let line1 = datatable (name: string)
+ [
+ "           ✨       ✨ ✨        ✨" 
+ ];
+  let line2 = datatable (name: string)
+ [
+ "       ✨         ✨ ✨ ✨         ✨" 
+ ];
+   let line3 = datatable (name: string)
+ [
+ "   ✨ ✨ ✨ ✨ ✨ ✨ ✨ ✨ ✨           " 
+ ];
+    let line4 = datatable (name: string)
+ [
+ "       ✨         ✨ ✨ ✨         ✨" 
+ ];
+     let line5 = datatable (name: string)
+ [
+ "             ✨      ✨ ✨       ✨" 
+ ];
+ line1
+ | union line2, line3, line4, line5
+ | summarize mylist = make_list(name)
+ | project May_the_Force_be_with_you=strcat_array(mylist, '\n')
+
