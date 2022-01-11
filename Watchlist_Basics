@@ -1,22 +1,22 @@
-//Watchlist as a variable, in list
+//Watchlist as a variable, where the requested data is in the list
 let watchlist = (_GetWatchlist('FeodoTracker') | project DstIP);
 Heartbeat
 | where ComputerIP in (watchlist)
 
-//Watchlist as a variable, not in list
+//Watchlist as a variable, where the requested data is not in the list
 let watchlist = (_GetWatchlist('FeodoTracker') | project DstIP);
 Heartbeat
 | where ComputerIP !in (watchlist)
 
 
-//Watchlist inline with the query
+//Watchlist inline with the query, where the requested data is in the list
 Heartbeat
 | where ComputerIP in ( 
     (_GetWatchlist('FeodoTracker')
     | project DstIP)
 )
 
-//Watchlist not inline with the query
+//Watchlist inline with the query, where the requested data is not in the list
 Heartbeat
 | where ComputerIP !in ( 
     (_GetWatchlist('FeodoTracker')
