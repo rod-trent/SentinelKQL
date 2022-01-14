@@ -1,0 +1,6 @@
+//Syslog Daemon activity
+
+Syslog
+| where Facility == "daemon"
+| summarize count() by Computer, SourceSystem, Facility, ProcessName
+| sort by count_ desc
