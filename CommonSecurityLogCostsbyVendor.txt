@@ -1,0 +1,13 @@
+//Billing by device for CommonSecurityLog
+
+let Price = 4.71;       // adjust to the region
+let TimeRange = 7d;     // required time range
+CommonSecurityLog
+| where TimeGenerated > ago(TimeRange)
+| summarize 
+    Entries = count(), 
+    BilledSize = sum(_BilledSize) by DeviceVendor
+| extend ['Estimated Price'] = (BilledSize / (1000 * 1000 * 1000)) * Price
+| extend Size = format_bytes(BilledSize)
+| project DeviceVendor, Entries, Size, ['Estimated Price']
+| order by Size desc 
