@@ -1,0 +1,8 @@
+//Sentinel Health must be enabled (https://cda.ms/3Fd), but this shows rules that have not executed successfully in the last 24 hours and how many times it failed.
+
+SentinelHealth
+| where TimeGenerated >= ago(1d)
+| where OperationName == "Scheduled analytics rule run"
+| where Status != "Success"
+| distinct SentinelResourceName
+| summarize count() by SentinelResourceName
