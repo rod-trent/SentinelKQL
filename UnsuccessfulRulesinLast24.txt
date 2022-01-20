@@ -1,4 +1,5 @@
 //Sentinel Health must be enabled (https://cda.ms/3Fd), but this shows rules that have not executed successfully in the last 24 hours and how many times it failed.
+//To create an Analytics Rules for this, just remove the summarize line (last line) and see: https://urlcoming
 
 SentinelHealth
 | where TimeGenerated >= ago(1d)
