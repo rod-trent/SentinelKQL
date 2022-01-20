@@ -20,4 +20,4 @@ SentinelHealth
 SentinelHealth
 | where TimeGenerated >= ago(1d)
 | where OperationName == "Scheduled analytics rule run"
-| where Status -= "Failure"
+| where Status == "Failure"
