@@ -1,6 +1,6 @@
 //Sentinel Health must be enabled (https://cda.ms/3Fd), but this shows rules that have not executed successfully in the last 24 hours and how many times it failed.
 
-//General query version to show Analytics Rules not firing or not firing completely.
+//General query version to show Analytics Rules not firing or not firing completely (partial success)
 SentinelHealth
 | where TimeGenerated >= ago(1d)
 | where OperationName == "Scheduled analytics rule run"
@@ -9,8 +9,15 @@ SentinelHealth
 | summarize count() by SentinelResourceName
 
 
-//Analytics Rule version. To create an Analytics Rules for this, just remove the distinct and summarize lines (last two lines) and see: https://urlcoming
+//Analytics Rule version to show partial success. See: https://urlcoming
 SentinelHealth
 | where TimeGenerated >= ago(1d)
 | where OperationName == "Scheduled analytics rule run"
 | where Status != "Success"
+
+
+//Analytics Rule version to show complete failure. See: https://urlcoming
+SentinelHealth
+| where TimeGenerated >= ago(1d)
+| where OperationName == "Scheduled analytics rule run"
+| where Status -= "Failure"
