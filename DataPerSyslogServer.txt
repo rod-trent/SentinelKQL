@@ -1,0 +1,6 @@
+//Show data received per Syslog server per device that reports to each Syslog server. Change the where DeviceVendor statement for the vendor to look for, or add more based on the devices you know report to each syslog server.
+
+CommonSecurityLog
+| where DeviceVendor == "Fortinet"
+| where isnotempty(ReceivedBytes)
+| summarize sum(ReceivedBytes) by Computer
