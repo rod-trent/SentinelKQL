@@ -1,0 +1,10 @@
+//Shows users, IPs, and ports used 
+
+let timeframe = 7d; //Setting the time frame variable to look at 7 days of data
+SecurityEvent //the table
+| where TimeGenerated >= ago(timeframe) //applying the timeframe variable
+| where isnotempty(SubjectUserName) //making sure we return actual data, not blank fields
+| where SubjectUserName != "-" and IpAddress != "-" and IpPort != "-" //eliminating the dash character from results
+| where isnotempty(IpAddress) //making sure we return actual data, not blank fields
+| where isnotempty(IpPort) //making sure we return actual data, not blank fields
+| distinct SubjectUserName, IpAddress, IpPort //showing distinct records
