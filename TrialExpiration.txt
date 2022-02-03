@@ -1,0 +1,15 @@
+//This query reports on the end date and how many days left for the Sentinel 31-day trail. Modify "TrialTest" with your Log Analytics Workspace name.
+//One use case: You can use this in a Playbook to receive an email reminder every day of how many trial days are left.
+
+
+let workspace = "TrialTest";
+let Trial = 31d;
+AzureActivity
+| where TimeGenerated >= ago(90d)
+| where OperationNameValue == "MICROSOFT.RESOURCES/DEPLOYMENTS/WRITE"
+| where ActivitySubstatusValue == "Created"
+| where Authorization contains workspace
+| extend End_Date = TimeGenerated + Trial 
+| extend Date_Created = TimeGenerated
+| extend Created_By = Caller
+| project workspace, Date_Created, End_Date, Days_Left = End_Date - Date_Created, Created_By
