@@ -1,0 +1,47 @@
+//This is the query that produces the Potential Malicious Events map on the entry page for Microsoft Sentinel
+
+union isfuzzy=true
+    (W3CIISLog
+    | extend
+        TrafficDirection = "InboundOrUnknown",
+        Country=RemoteIPCountry,
+        Latitude=RemoteIPLatitude,
+        Longitude=RemoteIPLongitude),
+    (DnsEvents
+    | extend
+        TrafficDirection = "InboundOrUnknown",
+        Country= RemoteIPCountry,
+        Latitude = RemoteIPLatitude,
+        Longitude = RemoteIPLongitude),
+    (WireData
+    | extend
+        TrafficDirection = iff(Direction != "Outbound", "InboundOrUnknown", "Outbound"),
+        Country=RemoteIPCountry,
+        Latitude=RemoteIPLatitude,
+        Longitude=RemoteIPLongitude),
+    (WindowsFirewall
+    | extend
+        TrafficDirection = iff(CommunicationDirection != "SEND", "InboundOrUnknown", "Outbound"),
+        Country=MaliciousIPCountry,
+        Latitude=MaliciousIPLatitude,
+        Longitude=MaliciousIPLongitude),
+    (CommonSecurityLog
+    | extend
+        TrafficDirection = iff(CommunicationDirection !in ("Outbound", "1"), "InboundOrUnknown", "Outbound"),
+        Country=MaliciousIPCountry,
+        Latitude=MaliciousIPLatitude,
+        Longitude=MaliciousIPLongitude,
+        Confidence=ThreatDescription,
+        Description=ThreatDescription),
+    (VMConnection
+    | where Type == "VMConnection"
+    | extend
+        TrafficDirection = iff(Direction != "outbound", "InboundOrUnknown", "Outbound"),
+        Country=RemoteCountry,
+        Latitude=RemoteLatitude,
+        Longitude=RemoteLongitude,
+        MaliciousIP=MaliciousIp)
+| where isnotempty(MaliciousIP)
+    and isnotempty(Country)
+    and isnotempty(Latitude)
+    and isnotempty(Longitude)
