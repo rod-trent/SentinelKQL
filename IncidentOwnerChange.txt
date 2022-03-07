@@ -1,0 +1,12 @@
+//Shows when the owner of an Incident has changed. From Gary Bushey. Details here: https://cda.ms/3Z8  
+
+SecurityIncident 
+| order by TimeGenerated asc 
+| serialize
+| extend NewOwner = Owner.email
+| extend PreIncidentNumber = prev(IncidentNumber)
+| extend PrevEmail = iif (PreIncidentNumber == IncidentNumber, prev(NewOwner), "")
+| where PrevEmail != NewOwner 
+| order by IncidentNumber, TimeGenerated desc
+| summarize arg_max(TimeGenerated, *) by IncidentNumber
+| project TimeGenerated, NewOwner, IncidentNumber, IncidentUrl, Severity
