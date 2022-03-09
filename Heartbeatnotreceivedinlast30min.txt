@@ -1,0 +1,6 @@
+//Systems that might have missed sending heartbeat to log analytics workspace for the last 30 min
+
+
+Heartbeat
+| summarize count() by bin(TimeGenerated, 1h),Computer
+| extend Heartbeats = iff((count_ <= 30),"missing Heartbeats","received all heartbeats")
