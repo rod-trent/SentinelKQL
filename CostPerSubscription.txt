@@ -1,0 +1,18 @@
+//Sentinel cost per subscription
+
+union withsource=TableName1 *
+| where TimeGenerated > ago(30d)
+| summarize
+Entries = count(),
+Size = sumif(_BilledSize, _IsBillable == true),
+estimate = sumif(_BilledSize, _IsBillable == true)
+by TableName1, _IsBillable, _ResourceId, _SubscriptionId
+| project
+['Table Name'] = TableName1,
+['Table Size'] = Size,
+['IsBillable'] = _IsBillable,
+['Estimated Table Price'] = (estimate / (1024 * 1024 * 1024)) * 2.95,
+['Resource'] = _ResourceId, _SubscriptionId
+| order by ['Table Size'] desc
+| summarize sum(['Estimated Table Price']) by _SubscriptionId
+| order by ['sum_Estimated Table Price'] desc
