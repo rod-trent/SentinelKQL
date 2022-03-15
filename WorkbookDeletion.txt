@@ -1,0 +1,5 @@
+//Who deleted a Microsoft Sentinel workbook
+
+AzureActivity
+| where OperationNameValue == "MICROSOFT.INSIGHTS/WORKBOOKS/DELETE"
+| distinct Caller, CallerIpAddress, EventSubmissionTimestamp, OperationName, OperationNameValue, Resource 
