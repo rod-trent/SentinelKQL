@@ -2,3 +2,4 @@
 
 SecurityIncident
 | extend MITRE_ = tostring(parse_json(tostring(AdditionalData.tactics))[0])
+| project IncidentNumber, Title, MITRE_ 
