@@ -1,0 +1,4 @@
+//Displaying the MITRE tactics assigned to Incidents
+
+SecurityIncident
+| extend MITRE_ = tostring(parse_json(tostring(AdditionalData.tactics))[0])
