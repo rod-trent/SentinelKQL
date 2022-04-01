@@ -1,0 +1,7 @@
+//Use to show when there's a potential gap or stoppage in data flow
+
+Syslog
+| where SyslogMessage contains "rhost"
+| extend rhost = extract("rhost=(.*) ", 1, SyslogMessage)
+| summarize max(TimeGenerated), count() by rhost
+| extend secondsDiff = datetime_diff('second',max_TimeGenerated, now())
