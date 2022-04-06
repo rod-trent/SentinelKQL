@@ -1,0 +1,5 @@
+//
+
+CloudAppEvents
+| where ActionType == "Write Workbooks"
+| project AccountDisplayName, IPAddress, DeviceType, ISP, City, CountryCode
