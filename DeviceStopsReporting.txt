@@ -1,0 +1,7 @@
+//Inventory your Devices into a Watchlist making sure MacAddress is one of the columns. Then report when that device is no longer delivering data to Sentinel.
+
+let watchlist = _GetWatchlist("Your Watchlist Alias") | project MacAddress;
+CommonSecurityLog
+| where CreatedTime between (datetime(2022-04-01) .. datetime(2022-04-30))
+| where DeviceMacAddress in (watchlist)
+| where isempty(DeviceMacAddress)
