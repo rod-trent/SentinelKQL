@@ -1,4 +1,4 @@
 SecurityIncident
 | where TimeGenerated > ago(1d) 
-| where Status == "Active"
+| where Status == "New"
 | project TimeGenerated, Title, Description, Severity, IncidentUrl
