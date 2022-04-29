@@ -1,0 +1,17 @@
+//Analytics Rule to report when someone creates or modifies an Analytics Rule
+//Entities: Caller, Caller IP, and Analytics Rule ID
+AzureActivity
+| where OperationNameValue has "MICROSOFT.SECURITYINSIGHTS/ALERTRULES/WRITE"
+| where ActivityStatusValue == "Success"
+| extend Analytics_Rule_ID = tostring(parse_json(Properties).resource)
+| extend AccountCustomEntity = Caller
+| extend IPCustomEntity = CallerIpAddress
+| extend URLCustomEntity = Analytics_Rule_ID
+// Add logic to detect the name from the RuleID
+| extend id_ = tostring(split(Analytics_Rule_ID, '/').[2]) 
+| join (
+    SecurityAlert 
+    | extend id_ = tostring(split(AlertType,'_').[1])
+    | project DisplayName, id_
+    ) on id_
+| project-away id_1, id_
