@@ -3,3 +3,11 @@
 AzureActivity
 | where TimeGenerated > ago(90d)
 | where OperationNameValue has "MICROSOFT.SECURITYINSIGHTS/WATCHLISTS/"
+
+
+//Get the actual Watchlist name
+
+AzureActivity
+| where TimeGenerated > ago(90d)
+| where OperationNameValue has "MICROSOFT.SECURITYINSIGHTS/WATCHLISTS/"
+| extend resource_ = tostring(parse_json(Properties).resource)
