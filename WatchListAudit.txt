@@ -1,0 +1,5 @@
+//Here's where to find auditing for Microsoft Sentinel Watchlists
+
+AzureActivity
+| where TimeGenerated > ago(90d)
+| where OperationNameValue has "MICROSOFT.SECURITYINSIGHTS/WATCHLISTS/"
