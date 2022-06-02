@@ -1,0 +1,7 @@
+//Show the user that initiated a Defender Live Response session and against which device.
+
+
+DeviceEvents
+| where AdditionalFields.RemoteClientsAccess == "AcceptRemote"
+| where InitiatingProcessFileName == "msedge.exe"
+| project DeviceName, InitiatingProcessAccountName
