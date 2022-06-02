@@ -1,3 +1,5 @@
+//Show the count of successful role assignments and who did it.
+
 AzureActivity
 | where TimeGenerated > ago(90d) and Authorization contains "Microsoft.Authorization/roleAssignments/write" and ActivityStatusValue == "Success"
 | parse ResourceId with * "/providers/" TargetResourceAuthProvider "/" *
