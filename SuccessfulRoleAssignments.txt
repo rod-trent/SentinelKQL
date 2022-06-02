@@ -1,4 +1,4 @@
 AzureActivity
-| where TimeGenerated > ago(60d) and Authorization contains "Microsoft.Authorization/roleAssignments/write" and ActivityStatus == "Succeeded"
+| where TimeGenerated > ago(90d) and Authorization contains "Microsoft.Authorization/roleAssignments/write" and ActivityStatusValue == "Success"
 | parse ResourceId with * "/providers/" TargetResourceAuthProvider "/" *
 | summarize count(), makeset(Caller) by TargetResourceAuthProvider
