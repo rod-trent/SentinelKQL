@@ -1,4 +1,4 @@
-//Show the count of successful role assignments and who did it.
+//Show the count of successful role assignments per user.
 
 AzureActivity
 | where TimeGenerated > ago(90d) and Authorization contains "Microsoft.Authorization/roleAssignments/write" and ActivityStatusValue == "Success"
