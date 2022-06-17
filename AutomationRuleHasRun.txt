@@ -2,3 +2,4 @@
 
 SecurityIncident
 | where ModifiedBy contains "Automation rule"
+| project When_Executed=TimeGenerated, Automation_Rule_Name=ModifiedBy
