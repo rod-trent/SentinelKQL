@@ -1,0 +1,4 @@
+//Find when Automation rules have run.
+
+SecurityIncident
+| where ModifiedBy contains "Automation rule"
