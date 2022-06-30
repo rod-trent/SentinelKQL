@@ -1,0 +1,3 @@
+// Last modified time for unique incident numbers = last run time
+SecurityIncident
+| summarize arg_max(LastModifiedTime,*) by IncidentNumber
