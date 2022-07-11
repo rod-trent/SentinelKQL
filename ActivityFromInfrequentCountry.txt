@@ -1,0 +1,4 @@
+//Alert - Activity from infrequent country
+SecurityAlert
+| where SystemAlertId == "eab68468-5057-60f3-2a6b-56b8b1ac9506"
+| summarize arg_max(TimeGenerated, *) by SystemAlertId
