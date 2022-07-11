@@ -1,0 +1,4 @@
+//Alert - Users with Greater Than 1 City
+SecurityAlert
+| where SystemAlertId == "7fa76d62-ac52-602a-b748-a28d0b7cabac"
+| summarize arg_max(TimeGenerated, *) by SystemAlertId
