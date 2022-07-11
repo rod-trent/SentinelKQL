@@ -1,0 +1,4 @@
+//Alert - Anomalous AAD Account Creation
+SecurityAlert
+| where SystemAlertId == "bf45d5cd-2cfc-dff1-8b7d-5440b5089529"
+| summarize arg_max(TimeGenerated, *) by SystemAlertId
