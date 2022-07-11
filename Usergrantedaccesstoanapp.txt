@@ -1,0 +1,4 @@
+//Alert - User granted access to an app
+SecurityAlert
+| where SystemAlertId == "2032d776-50b6-16ca-dcd1-15d79414e3f4"
+| summarize arg_max(TimeGenerated, *) by SystemAlertId
