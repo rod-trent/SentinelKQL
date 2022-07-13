@@ -1,0 +1,7 @@
+//Shows active accounts and days from last login
+
+SigninLogs
+| where TimeGenerated > ago(365d)
+| where ResultType == "0"
+| summarize arg_max(TimeGenerated, *) by UserPrincipalName
+| project TimeGenerated, UserPrincipalName, UserType, ['Days Since Last Logon']=datetime_diff("day", now(),TimeGenerated)
