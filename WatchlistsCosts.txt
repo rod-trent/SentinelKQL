@@ -1,0 +1,7 @@
+//Query to show cost of each Microsoft Sentinel Watchlist. Watchlist costs come directly from ingestion. 
+
+Usage 
+| where StartTime >= startofday(ago(365d)) and EndTime < startofday(now())
+| where IsBillable == true
+| where DataType == "Watchlist"
+| summarize BillableDataGB = sum(Quantity) / 1000. by bin(StartTime, 1d), DataType
