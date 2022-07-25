@@ -1,0 +1,5 @@
+//An example of how to calculate a column of data. This retrieves the number of ActivityStatusValue records then shows a single result of the total calculated value.
+
+AzureActivity
+| summarize count() by ActivityStatusValue
+| summarize sum(count_)
