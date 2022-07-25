@@ -1,5 +1,6 @@
-//An example of how to calculate a column of data. This retrieves the number of ActivityStatusValue records then shows a single result of the total calculated value.
+//An example of how to calculate a column of data. This query retrieves the number of ActivityStatusValue records from the AzureActivity table then shows a single result of the total calculated (sum) value.
 
 AzureActivity
 | summarize count() by ActivityStatusValue
 | summarize sum(count_)
+
