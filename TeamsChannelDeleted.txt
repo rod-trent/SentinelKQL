@@ -1,0 +1,5 @@
+//When a Microsoft Teams channel is deleted
+
+OfficeActivity
+| where RecordType == "MicrosoftTeams"
+| where Operation == "ChannelDeleted"
