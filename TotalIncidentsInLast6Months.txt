@@ -1,0 +1,11 @@
+//Total incidents generated each month for the last 6 months
+
+SecurityIncident
+| where TimeGenerated between(startofmonth(now(),-7) ..endofmonth(endofmonth(now(),-1)) )
+| extend yy = datepart("Year", TimeGenerated)
+| extend mm = datepart("Month", TimeGenerated)
+| summarize count() by month=bin(datepart("Month", TimeGenerated), 1), tostring(yy), mm
+| extend month = case(month==1,strcat('Jan/',yy),month==2,strcat('Feb/',yy),month==3, strcat('Mar/',yy),month==4,strcat('Apr/',yy),month==5,strcat('May/',yy),month==6,strcat('Jun/',yy),month==7, strcat('Jul/',yy),month==8,strcat('Aug/',yy),month==9,strcat('Sep/',yy),month==10,strcat('Oct/',yy),month==11,strcat('Nov/',yy),month==12,strcat('Dec/',yy),"error")
+| order by yy asc, mm asc
+| project-away yy,mm 
+| render columnchart title='Incident by Month'
