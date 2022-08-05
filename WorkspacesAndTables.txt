@@ -1,4 +1,5 @@
-//This query will display the tables from any/all workspaces across a tenant. Just need to modify the scope on a workspace to include the additional workspaces (as shown in teh image)
+//This query will display the tables from any/all workspaces across a tenant. Just need to modify the scope on a workspace to include the additional workspaces (as shown in the image)
+//Image link: https://raw.githubusercontent.com/rod-trent/SentinelKQL/master/Images/scope.png
 
 
 Usage
@@ -10,4 +11,4 @@ Usage
 | distinct workspaceName, ['Table Name']
 
 
-![Workspace Scope](https://raw.githubusercontent.com/rod-trent/SentinelKQL/master/Images/scope.png "Workspace Scope")
+
