@@ -1,0 +1,13 @@
+//This query will display the tables from any/all workspaces across a tenant. Just need to modify the scope on a workspace to include the additional workspaces (as shown in teh image)
+
+
+Usage
+| where StartTime > ago(1d)
+| extend workspaceName = tostring(split(ResourceUri, "/")[-1])
+| extend subscription = tostring(split(ResourceUri, "/")[2])
+| extend resourceGroup = tostring(split(ResourceUri, "/")[4])
+| summarize ['Table Size'] =sum(Quantity) / 1000 by TenantId, subscription, resourceGroup, workspaceName, ['Table Name'] =DataType, ['IsBillable'] =IsBillable
+| distinct workspaceName, ['Table Name']
+
+
+![Workspace Scope](https://raw.githubusercontent.com/rod-trent/SentinelKQL/master/Images/scope.png "Workspace Scope")
