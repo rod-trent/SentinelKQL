@@ -1,4 +1,4 @@
-\\Uses the Parse operator to generate a column of data from between specific strings
+\\Example that uses the Parse operator to generate a column of data from between specific strings. Return value is "Microsoft System Center"
 
 print input = 'C:\\Program Files\\Microsoft System Center\\Server\\Microsoft.Mom.Sdk.ServiceHost.exe'
 | parse input with * "s\\" Process_Host_Name "\\S" *
