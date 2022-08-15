@@ -11,4 +11,16 @@ Usage
 | distinct workspaceName, ['Table Name']
 
 
+//Adding below the Solution column, i.e., where the table comes from
+
+Usage
+| where StartTime > ago(1d)
+| extend workspaceName = tostring(split(ResourceUri, "/")[-1])
+| extend subscription = tostring(split(ResourceUri, "/")[2])
+| extend resourceGroup = tostring(split(ResourceUri, "/")[4])
+| summarize ['Table Size'] =sum(Quantity) / 1000 by TenantId, subscription, resourceGroup, workspaceName, ['Table Name'] =DataType, ['IsBillable'] =IsBillable, Solution
+| distinct workspaceName, ['Table Name'], Solution
+| sort by Solution asc
+
+
 
