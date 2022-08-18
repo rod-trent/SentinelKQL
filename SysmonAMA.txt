@@ -1,0 +1,9 @@
+//Computers using the AMA sending Sysmon data to Sentinel
+
+
+SecurityEvent
+| join Heartbeat on Computer
+| where TimeGenerated >= ago(1h)
+| where Category == "Azure Monitor Agent"
+| where EventSourceName == "Microsoft-Windows-Sysmon"
+| distinct Computer, Category, EventSourceName
