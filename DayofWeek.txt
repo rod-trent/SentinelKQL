@@ -1,0 +1,15 @@
+//Simple KQL query to show day of week when a record was generated.
+
+// Results Legend:
+// Sunday = 0.00:00:00
+// Monday = 1.00:00:00
+// Tuesday = 2.00:00:00
+// Wednesday = 3.00:00:00
+// Thursday 4.00:00:00
+// Friday = 5.00:00:00
+// Saturday = 6.00:00:00
+
+
+SigninLogs
+| project TimeGenerated, Day_of_Week = dayofweek(TimeGenerated)
+| take 10
