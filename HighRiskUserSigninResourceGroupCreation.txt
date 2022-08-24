@@ -1,0 +1,20 @@
+//Users with have high risk sign-in activity that have created a resource group 
+
+
+let riskyAzureSignIns = (
+AADSignInEventsBeta
+| where Timestamp > ago(7d)
+| where ErrorCode == 0
+| where Application == "Azure Portal"
+| where RiskLevelAggregated == 100 or RiskLevelDuringSignIn == 100
+| project AccountObjectId, RiskySignInTimestamp = Timestamp);
+let resourceGroupCreation = ( 
+CloudAppEvents
+| where Timestamp > ago(7d)
+| where Application == "Microsoft Azure"
+| where ActionType == "Write ResourceGroup"
+| project AccountObjectId, ResourceGroupCreation = Timestamp);
+//join the tables
+riskyAzureSignIns
+| join resourceGroupCreation on AccountObjectId 
+| where ResourceGroupCreation between (RiskySignInTimestamp .. (RiskySignInTimestamp + 12h))
