@@ -1,0 +1,22 @@
+//Suspicious ARM activies
+
+let threshold = 3;
+let newGuestAccounts = (
+CloudAppEvents
+| where Timestamp > ago(7d)
+| where ActionType == "Add user."
+| where RawEventData.ResultStatus == "Success"
+| where RawEventData has "guest" and RawEventData.ObjectId has "#EXT#"
+| mv-expand Property = RawEventData.ModifiedProperties
+| where Property.Name == "AccountEnabled" and Property.NewValue has "true"
+| project newGuestAccountObjectId = tostring(RawEventData.Target[1].ID)
+| distinct newGuestAccountObjectId);
+CloudAppEvents
+| where Timestamp > ago(7d)
+| where isnotempty(toscalar(newGuestAccounts))
+| where Application == "Microsoft Azure"
+| where ActionType == "Validate Deployments"
+| where RawEventData contains "createVm"
+| where AccountObjectId in (newGuestAccounts)
+| summarize VMCreationCount = count() by AccountObjectId
+| where VMCreationCount > threshold
