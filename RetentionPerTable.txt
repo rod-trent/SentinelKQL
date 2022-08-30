@@ -1,4 +1,4 @@
-//Show when data retention is changed per table, who did it and their IP addresss
+//Show when data retention is changed per table, who did it and their IP address
 
 
 AzureActivity
