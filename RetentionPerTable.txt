@@ -1,0 +1,8 @@
+//Show when data retention is changed per table, who did it and their IP addresss
+
+
+AzureActivity
+| where OperationNameValue == "MICROSOFT.OPERATIONALINSIGHTS/WORKSPACES/TABLES/WRITE"
+| extend table = parse_json(Properties).entity
+| parse-where table with * "/tables/" Changed_Table
+| distinct Changed_Table, Changed_by = Caller, User_IP = CallerIpAddress
