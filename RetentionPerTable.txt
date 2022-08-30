@@ -5,4 +5,4 @@ AzureActivity
 | where OperationNameValue == "MICROSOFT.OPERATIONALINSIGHTS/WORKSPACES/TABLES/WRITE"
 | extend table = parse_json(Properties).entity
 | parse-where table with * "/tables/" Changed_Table
-| distinct Changed_Table, Changed_by = Caller, User_IP = CallerIpAddress, TimeGenerated
+| distinct Changed_Table, Changed_by = Caller, User_IP = CallerIpAddress, Time_it_Happened = TimeGenerated
