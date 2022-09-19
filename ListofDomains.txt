@@ -1,0 +1,5 @@
+//Using make_set to build a list of unique user domains from the UserPrincipalName column
+
+SigninLogs
+| extend UserDomains = split(UserPrincipalName,'@')[1] 
+| summarize UserDomains = make_set(UserDomains) 
