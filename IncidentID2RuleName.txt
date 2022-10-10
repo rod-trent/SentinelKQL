@@ -1,0 +1,7 @@
+//Getting the Analytics Rule name from the Incident ID
+
+SecurityAlert
+| where TimeGenerated >= (90d)
+| extend RuleID = parse_json(tostring(parse_json(ExtendedProperties).["Analytic Rule Ids"]))[0]
+| where ProviderName contains "ASI" and RuleID contains "<enter your Incident ID here>"
+| distinct DisplayName
