@@ -2,7 +2,7 @@
 
 SecurityIncident
 | where TimeGenerated >= ago(90d)
-| where IncidentNumber == toint("<enter your Incident ID here>")
+| where IncidentNumber == toint("<enter your Incident ID here>") // Example: "118831"
 | summarize arg_max(TimeGenerated, IncidentNumber, AlertIds)
 | mv-expand AlertIds to typeof(string)
 | join kind=leftouter(
