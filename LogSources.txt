@@ -1,0 +1,12 @@
+//Get the active log sources
+
+set maxoutputcolumns=5000;   //Last seen
+union withsource=TableName1 *
+| summarize arg_min(TimeGenerated, *) by TableName1 
+
+//Get the count of active log sources
+set maxoutputcolumns=5000;   //Actvice tables count
+union withsource=TableName1 *
+| where TimeGenerated > ago(30min)
+| summarize arg_max(TimeGenerated, *) by TableName1 
+| count
