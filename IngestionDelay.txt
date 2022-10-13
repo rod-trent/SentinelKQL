@@ -1,0 +1,6 @@
+//Identifying ingestion delay between tables
+
+union SigninLogs, AuditLogs
+| extend E2EIngestionLatencyMin = todouble(datetime_diff("Second",ingestion_time(),TimeGenerated))/60 
+| summarize avg(E2EIngestionLatencyMin), min(E2EIngestionLatencyMin), max(E2EIngestionLatencyMin) by  bin(TimeGenerated,1h),ingestion_time(), Type
+| summarize lessthanOneMin = countif(avg_E2EIngestionLatencyMin < 60), gtrthanOneMin=countif(avg_E2EIngestionLatencyMin > 60) by Type
