@@ -1,4 +1,4 @@
-//Reporting on a Connector that isn't reporting data in the last hour. The example below is for the OfficeActivity table
+//Reporting on a Connector that isn't reporting data in the last hour. The example below is for the OfficeActivity table. Create an Analytics Rule to be alerted.
 
 OfficeActivity
 | where TimeGenerated > ago(1h)
