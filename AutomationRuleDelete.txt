@@ -1,0 +1,5 @@
+//Who deleted an Automation Rule
+
+AzureActivity
+| where OperationNameValue == "MICROSOFT.SECURITYINSIGHTS/AUTOMATIONRULES/DELETE"
+| project TimeGenerated, Caller, CallerIpAddress
