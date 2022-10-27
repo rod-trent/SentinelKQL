@@ -1,0 +1,5 @@
+//When was a Watchlist deleted and who deleted it
+
+AzureActivity
+| where OperationNameValue == "MICROSOFT.SECURITYINSIGHTS/WATCHLISTS/DELETE"
+| project TimeGenerated, Caller, CallerIpAddress
