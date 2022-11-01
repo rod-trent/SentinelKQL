@@ -1,0 +1,18 @@
+//Example of a lookback query
+
+Heartbeat
+| where TimeGenerated between (now(-2h) .. now())
+//| summarize min(TimeGenerated), max(TimeGenerated)
+| where Computer startswith "S"
+| distinct Computer
+//
+// Now do the same for the past 14days minus the last 2 hours - this is key so we dont process the same data!!! 
+//
+| join kind=rightanti
+ (
+    Heartbeat
+    | where TimeGenerated between (ago(14d) .. ago(2h))
+    //| summarize min(TimeGenerated), max(TimeGenerated)
+    | where Computer startswith "S"
+    | distinct Computer
+ ) on Computer​
