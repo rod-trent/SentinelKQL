@@ -1,0 +1,8 @@
+//Show (with indicators) if a Computer is online or not
+
+Update
+| extend ResourceId = iif(isempty(ResourceId), Computer, ResourceId)
+| summarize arg_max(TimeGenerated, *) by ResourceId
+| extend Online = iif(TimeGenerated < ago(1h),"⚫","🟢")
+| project LastSeen=TimeGenerated, Online, Computer, OS = iif(OSType == "Linux", "Linux", "Windows")
+| sort by LastSeen
