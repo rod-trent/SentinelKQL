@@ -4,4 +4,4 @@ SigninLogs
 | where TimeGenerated > ago(365d)
 | where ResultType == "0"
 | summarize arg_max(TimeGenerated, *) by UserPrincipalName
-| project TimeGenerated, UserPrincipalName, UserType, ['Days Since Last Logon']=datetime_diff("day", now(),TimeGenerated)
+| project TimeGenerated, UserPrincipalName, UserType, ['Days Since Last Logon']=toint(datetime_diff("day", now(),TimeGenerated))
