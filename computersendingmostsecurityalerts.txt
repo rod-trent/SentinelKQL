@@ -1,3 +1,5 @@
+//Show Computers sending the most Security Alerts
+
 union withsource = tt *
 | where TimeGenerated > startofday(ago(7d)) and TimeGenerated < startofday(now())
 | where _IsBillable == true
