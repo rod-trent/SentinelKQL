@@ -1,0 +1,9 @@
+//You can create an Analytics Rule with the following to alert when Palo Alto data stops flowing.
+
+
+CommonSecurityLog
+| where TimeGenerated > ago(2h)
+    | where DeviceVendor == "Palo Alto Networks"
+    | where DeviceProduct has "PAN-OS"
+| summarize count()
+ where count_ == 0
