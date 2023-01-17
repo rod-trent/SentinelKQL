@@ -1,0 +1,7 @@
+//Shows when an NRT rule failed to run and supplies the reason.
+
+
+SentinelHealth
+| where OperationName == "NRT analytics rule run"
+| where Status == "Failure"
+| project SentinelResourceName, Status, Description
