@@ -1,0 +1,6 @@
+//This Alert counts all OfficeActivity logs for the last hour and triggers on a result of 0. 
+
+OfficeActivity
+| where TimeGenerated > ago(2h)
+| summarize count()
+| where count_ == 0
