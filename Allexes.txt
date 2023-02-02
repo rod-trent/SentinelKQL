@@ -1,0 +1,7 @@
+//Lists all captures .exe's. For Sentinel or Defender Advanced Hunting
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where FileName endswith ".exe"     
+| project Timestamp, DeviceName, FileName, AccountSid, AccountName, AccountDomain 
+| top 100 by Timestamp 
