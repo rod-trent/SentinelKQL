@@ -1,0 +1,6 @@
+//Show you all active user accounts that have logged in within the last 7 days and have a level of 3 or higher
+
+SigninLogs
+| where TimeGenerated >= ago(7d)
+| where level >= 3
+| project IPAddress, UserDisplayName, Level
