@@ -1,0 +1,4 @@
+//Example shows the trend of requests to an app over the previous days
+
+OfficeActivity
+| make-series Requests = count() default = 0 on TimeGenerated from ago(1d) to now() step 1h
