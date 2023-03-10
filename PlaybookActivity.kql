@@ -1,0 +1,8 @@
+//Watch Playbook execution and display Playbook name, which action was invoked, and who did it
+
+AzureDiagnostics
+| join AzureActivity on ResourceGroup
+| where ResourceProvider == "MICROSOFT.LOGIC"
+| extend PlaybookName = resource_workflowName_s
+| extend Action = Resource
+| distinct Caller, PlaybookName, Action, CallerIpAddress
