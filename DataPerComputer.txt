@@ -6,3 +6,18 @@ find where TimeGenerated > ago(1d) project _BilledSize, _IsBillable, Computer, _
             freeData   = sumif(_BilledSize, _IsBillable=~false) by Computer 
 | extend Total_Data = billedData + freeData            
 | order by billedData desc
+
+
+//Same data, converted to MB
+
+find where TimeGenerated > ago(1d) project _BilledSize, _IsBillable, Computer, _ResourceId
+| where _isBillable=true and isnotempty(Computer) 
+| summarize billedData = format_bytes(sumif(_BilledSize, _IsBillable=~true)),
+            freeData   = format_bytes(sumif(_BilledSize, _IsBillable=~false)),
+            billedData1 = sumif(_BilledSize, _IsBillable=~true),
+            freeData1  = sumif(_BilledSize, _IsBillable=~false) 
+by Computer
+| extend total_d = billedData1 + freeData1
+| extend Total_Data = format_bytes(total_d)
+| project-away billedData1, freeData1, total_d            
+| order by billedData desc
