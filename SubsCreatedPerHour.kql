@@ -1,0 +1,6 @@
+//Counts the number of subscription creation events per hour and returns a table with two columns: TimeGenerated and count_.
+
+
+AzureActivity
+| where OperationNameValue == "Microsoft.Resources/subscriptions/write"
+| summarize count() by bin(TimeGenerated, 1h)
