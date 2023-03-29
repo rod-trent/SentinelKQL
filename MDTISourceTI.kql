@@ -1,0 +1,4 @@
+//Show TI from the MDTI connector
+
+ThreatIntelligenceIndicator
+| where SourceSystem in ("Microsoft Defender Threat Intelligence", "Microsoft Emerging Threat Feed")
