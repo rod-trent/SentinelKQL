@@ -1,0 +1,5 @@
+//Using the maxoutputcolumns. Overrides the default maximum number of columns a query is allowed to produce.
+
+set maxoutputcolumns=4677;
+search "rotrent"
+| distinct $table
