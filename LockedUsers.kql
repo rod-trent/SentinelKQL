@@ -1,0 +1,6 @@
+// A user account was locked out.
+
+SecurityEvent
+| where EventID == 4740
+| summarize StartTime = min(TimeGenerated), EndTime = max(TimeGenerated), LockoutsCount = count() by Activity, Account, TargetSid, TargetDomainName, SourceComputerId, SourceDomainController = Computer
+| extend timestamp = StartTime, AccountCustomEntity = Account, HostCustomEntity = TargetDomainName
