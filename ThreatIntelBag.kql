@@ -1,0 +1,3 @@
+//Snippet of KQL query to create a bag of TI to reference later in the query
+
+let TI_Bag = ThreatIntelligenceIndicator | where isnotempty(NetworkSourceIP) | project NetworkSourceIP;
