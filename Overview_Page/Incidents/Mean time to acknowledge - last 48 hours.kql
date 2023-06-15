@@ -1,0 +1,12 @@
+let MeanTimeToAck = SecurityIncident
+| where Status == 'Active'
+| summarize arg_min(LastModifiedTime, CreatedTime, TimeGenerated) by IncidentName
+| extend timeToAck = datetime_diff('Minute', LastModifiedTime, CreatedTime)
+| summarize MeanTime = percentiles(timeToAck, 50) by HalfQueryPeriodTime = bin_at(TimeGenerated, 24h, ago(48h)) 
+| order by HalfQueryPeriodTime asc;
+MeanTimeToAck
+| serialize HalfQueryPeriodTime
+| extend MeanTime = MeanTime/todouble(60)
+| extend Trend = (MeanTime - prev(MeanTime))/todouble(60)
+| order by HalfQueryPeriodTime desc
+| project MeanTime, Trend
