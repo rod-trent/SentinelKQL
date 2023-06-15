@@ -1,0 +1,5 @@
+SecurityIncident
+| where Status == 'Closed'
+| summarize arg_min(LastModifiedTime, ModifiedBy) by IncidentName
+| where ModifiedBy has 'Automation rule'
+| summarize Count = count()
