@@ -1,0 +1,5 @@
+SecurityIncident
+| where Status == 'Closed'
+| where isnotempty(Classification)
+| summarize arg_max(LastModifiedTime, Classification) by IncidentName
+| summarize Count = count() by Classification
