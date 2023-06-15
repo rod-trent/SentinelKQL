@@ -1,0 +1,12 @@
+ThreatIntelligenceIndicator
+| where ExpirationDateTime > now()
+| summarize arg_max(TimeGenerated, *) by IndicatorId
+| where Active == true
+| extend IndicatorType = 
+	iif(isnotempty(EmailSourceIpAddress) or isnotempty(NetworkDestinationIP) or isnotempty(NetworkIP) or isnotempty(NetworkSourceIP) or isnotempty(NetworkCidrBlock), 'IP',
+	iff(isnotempty(Url), 'URL',
+	iff(isnotempty(EmailRecipient) or isnotempty(EmailSenderAddress), 'Email',
+	iff(isnotempty(FileHashValue), 'File',
+	iff(isnotempty(DomainName) or isnotempty(EmailSourceDomain), 'Domain',
+    'Other')))))
+| summarize IndicatorCount = count() by IndicatorType
