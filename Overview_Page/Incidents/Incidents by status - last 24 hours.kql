@@ -1,0 +1,3 @@
+ SecurityIncident
+| summarize arg_max(LastModifiedTime, Status) by IncidentName
+| summarize Count = count() by Status 
