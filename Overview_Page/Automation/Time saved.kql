@@ -1,0 +1,6 @@
+SecurityIncident
+| where Status == 'Closed'
+| summarize arg_min(LastModifiedTime, ClosedTime, CreatedTime, ModifiedBy) by IncidentName
+| extend timeToClose = datetime_diff('Minute',ClosedTime, CreatedTime)
+| extend IsClosedByAutomation = iff(ModifiedBy has 'Automation rule','ClosedByAutomation', 'NotClosedByAutomation')
+| summarize MeanTimeToClose = percentiles(timeToClose, 50) by IsClosedByAutomation
