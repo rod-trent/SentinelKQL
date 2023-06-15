@@ -1,0 +1,8 @@
+SecurityIncident
+| where CreatedTime > ago(1d)
+| summarize arg_max(LastModifiedTime, Status, CreatedTime) by IncidentName
+| summarize Count = count() by Status, bin(CreatedTime, 4h)
+| extend StatusCount = pack(Status, Count) 
+| summarize StatusCountArray = make_bag(StatusCount) by CreatedTime 
+| evaluate bag_unpack(StatusCountArray)
+| project Result = pack_all() 
