@@ -1,0 +1,4 @@
+SentinelHealth
+| where OperationName == 'Data fetch status change'
+| summarize arg_max(TimeGenerated, *) by SentinelResourceId, SentinelResourceKind, SentinelResourceName
+| where Status == "Failure"
