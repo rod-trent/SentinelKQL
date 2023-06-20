@@ -1,0 +1,9 @@
+//UEBA Estimation for enabling SigninLogs
+
+SigninLogs //Data Source
+| where TimeGenerated > ago(30d)
+| where _IsBillable == true
+| summarize sum(_BilledSize)
+| extend TotalGB = sum__BilledSize / 1024
+| extend UEBAGB = 0.07*TotalGB
+| project UEBAGB
