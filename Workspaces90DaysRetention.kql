@@ -1,0 +1,5 @@
+//Run the following in Azure Resource Graph Explorer to show all existing Workspaces set to 90 days retention
+
+resources
+| where type == "microsoft.operationalinsights/workspaces"
+| where properties['retentionInDays'] == 90
