@@ -1,0 +1,6 @@
+//Stopped services
+
+SecurityEvent
+| where EventID == 7045
+| where EventData contains "stopped"
+| project TimeGenerated, Computer, EventData
