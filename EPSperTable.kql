@@ -1,0 +1,9 @@
+//Average EPS for a table. Change the tablename
+
+let bytes_ = 500;
+SecurityEvent
+| where TimeGenerated > startofday(ago(1d))
+| summarize count() by bin(TimeGenerated, 1m)
+| extend EPS = count_ /60
+|summarize avg(EPS), estimatedGBytes = (avg(EPS) * bytes_ ) / (1024*1024*1024)
+| sort by toint(estimatedGBytes) desc
