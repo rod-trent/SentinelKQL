@@ -1,6 +1,5 @@
 //Average EPS for a table. Change the tablename
 
-let bytes_ = 500;
 SecurityEvent
 | where TimeGenerated > startofday(ago(1d))
 | summarize count() by bin(TimeGenerated, 1m)
