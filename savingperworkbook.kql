@@ -1,0 +1,40 @@
+//For the Cost workbook. Shows E5 savings per workspace
+
+let DailyMaxDiscountGB  = ((5*toreal({TotalE5Seats}))/1024);
+Usage
+| where IsBillable == true
+| where DataType in ("SigninLogs", 
+"AuditLogs", 
+"AADNonInteractiveUserSignInLogs", 
+"AADServicePrincipalSignInLogs",
+"AADManagedIdentitySignInLogs",
+"AADProvisioningLogs",
+"ADFSSignInLogs",
+"McasShadowItReporting", 
+"InformationProtectionLogs_CL", 
+"DeviceEvents",  
+"DeviceFileEvents",  
+"DeviceImageLoadEvents",  
+"DeviceInfo",  
+"DeviceLogonEvents",  
+"DeviceNetworkEvents",  
+"DeviceNetworkInfo",  
+"DeviceProcessEvents",  
+"DeviceRegistryEvents",
+"DeviceFileCertificateInfo",  
+"EmailAttachmentInfo",  
+"EmailEvents",  
+"EmailPostDeliveryEvents",  
+"EmailUrlInfo",
+"IdentityLogonEvents",
+"IdentityQueryEvents",
+"IdentityDirectoryEvents",
+"AlertEvidence",
+"CloudAppEvents")   
+| extend workspaceName = tostring(split(ResourceUri, "/")[-1])
+| extend subscription = tostring(split(ResourceUri, "/")[2])
+| extend resourceGroup = tostring(split(ResourceUri, "/")[4])
+| summarize DailyBillableGB = toreal(sum(Quantity))/ 1024  by format_datetime(TimeGenerated, 'yy-MM-dd'), workspaceName 
+| summarize TotalEligibleGB = sum(iif(toreal(DailyBillableGB)>toreal(DailyMaxDiscountGB),toreal(DailyMaxDiscountGB),DailyBillableGB)) by workspaceName
+| extend TotalDiscount = toreal(TotalEligibleGB)*{Price}
+| project workspaceName, TotalDiscount
