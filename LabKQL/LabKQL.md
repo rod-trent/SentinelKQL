@@ -306,7 +306,7 @@ SigninLogs
 | extend AuthResult = AuthDetails[0].["authenticationStepResultDetail"] 
 | project AuthMethod, AuthResult, AuthDetails
 ```
-The mv-expand operator expands multi-value dynamic arrays or property bags into multiple records.
+
 
 ```KQL
  SigninLogs
