@@ -1,3 +1,5 @@
+# KQL Queries for the Microsoft Sentinel module of the Microsoft Ignite Pre-day Security Workshop
+
 
 ```KQL
 SecurityEvent
