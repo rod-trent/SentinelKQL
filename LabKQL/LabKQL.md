@@ -1,4 +1,5 @@
 ## KQL Queries for the Microsoft Sentinel module of the Microsoft Ignite Pre-day Security Workshop
+### Use the copy option to copy the query to paste into the pre-day workshop lab environment.
 
 
 ```KQL
