@@ -6,12 +6,12 @@
 SecurityEvent
 ```
 
-
+The following statement demonstrates the search operator:
 ```KQL
 search "new"
 ```
 
-
+The following statement demonstrates search across tables:
 ```KQL
 search in (SecurityEvent,App*) "new"
 ```
