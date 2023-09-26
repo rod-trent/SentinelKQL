@@ -6,16 +6,19 @@
 SecurityEvent
 ```
 
-The following statement demonstrates the search operator:
+The following statement demonstrates the **search** operator:
+
 ```KQL
 search "new"
 ```
 
-The following statement demonstrates search across tables:
+The following statement demonstrates searching across tables: 
+
 ```KQL
 search in (SecurityEvent,App*) "new"
 ```
 
+The following statements demonstrates the where operator
 
 ```KQL
 SecurityEvent
@@ -39,6 +42,7 @@ SecurityEvent
 | where TimeGenerated > ago(1h) and EventID in (4624, 4625)
 ```
 
+The following statement demonstrates the use of the let statement to declare variables:
 
 ```KQL
  let timeOffset = 1h;
@@ -48,16 +52,19 @@ SecurityEvent
  | where EventID != discardEventId
 ```
 
+The following statement demonstrates the use of the let statement to declare a dynamic list:
+
 ```KQL
 let suspiciousAccounts = datatable(account: string) [
     @"NA\timadmin", 
     @"NT AUTHORITY\SYSTEM"
 ];
-SecurityEvent 
-| where TimeGenerated > ago(1h)
-| where Account in (suspiciousAccounts)
+SecurityEvent 
+| where TimeGenerated > ago(1h)
+| where Account in (suspiciousAccounts)
 ```
 
+The following statement demonstrates the use of the "let" statement to declare a dynamic table: 
 
 ```KQL
 let LowActivityAccounts =
@@ -67,7 +74,7 @@ let LowActivityAccounts =
 LowActivityAccounts | where Account contains "sql"
 ```
 
-
+The following statement demonstrates creating fields using the extend operator: 
 
 ```KQL
 SecurityEvent
@@ -76,7 +83,7 @@ SecurityEvent
 | extend StartDir =  substring(ProcessName,0, string_size(ProcessName)-string_size(Process))
 ```
 
-
+The following statement demonstrates sorting results using the order by operator: 
 
 ```KQL
 SecurityEvent
@@ -86,7 +93,8 @@ SecurityEvent
 | order by StartDir desc, Process asc
 ```
 
-
+The following statements demonstrate specifying fields in the results:
+    
 
 ```KQL
 SecurityEvent
@@ -112,7 +120,7 @@ SecurityEvent
 | project-away ProcessName
 ```
 
-
+The following statements demonstrates the count() function: 
 
 ```KQL
 SecurityEvent
@@ -120,15 +128,13 @@ SecurityEvent
 | summarize count() by Process, Computer
 ```
 
-
-
 ```KQL
 SecurityEvent
 | where TimeGenerated > ago(1h) and EventID == 4624
 | summarize cnt=count() by AccountType, Computer
 ```
 
-
+The following statement demonstrates the dcount() function: 
 
 ```KQL
 SecurityEvent
@@ -136,6 +142,7 @@ SecurityEvent
 | summarize dcount(IpAddress)
 ```
 
+The following statement is a rule to detect Invalid password failures:
 
 ```KQL
 let timeframe = 30d;
@@ -147,7 +154,7 @@ SigninLogs
 | where applicationCount >= threshold
 ```
 
-
+The following statement demonstrates the arg_max() function:
 
 ```KQL
 SecurityEvent 
@@ -155,6 +162,7 @@ SecurityEvent
 | summarize arg_max(TimeGenerated,*) by Computer
 ```
 
+The following statement demonstrates the arg_min() function:
 
 ```KQL
 SecurityEvent 
@@ -162,6 +170,7 @@ SecurityEvent
 | summarize arg_min(TimeGenerated,*) by Computer
 ```
 
+The following statements demonstrate the importance of understanding results based on the order of the pipe "|":
 
 ```KQL
 SecurityEvent
@@ -169,14 +178,13 @@ SecurityEvent
 | where EventID == "4624"
 ```
 
-
 ```KQL
 SecurityEvent
 | where EventID == "4624"
 | summarize arg_max(TimeGenerated, *) by Account
 ```
 
-
+The following statement demonstrates the make_list() function:
 
 ```KQL
 SecurityEvent
@@ -185,7 +193,7 @@ SecurityEvent
 | summarize make_list(Account) by Computer
 ```
 
-
+The following statement demonstrates the make_set() function:
 
 ```KQL
 SecurityEvent
@@ -194,7 +202,7 @@ SecurityEvent
 | summarize make_set(Account) by Computer
 ```
 
-
+The following statement demonstrates the render operator visualizing results with a barchart:
 
 ```KQL
 SecurityEvent 
@@ -203,7 +211,7 @@ SecurityEvent
 | render barchart
 ```
 
-
+The following statement demonstrates the render operator visualizing results with a time series:
 
 ```KQL
 SecurityEvent 
@@ -212,32 +220,30 @@ SecurityEvent
 | render timechart
 ```
 
-
+The following statements demonstrates the union operator:
 
 ```KQL
-SecurityEvent 
-| union SigninLogs  
+SecurityEvent 
+| union SigninLogs  
 ```
 
-
 ```KQL
-SecurityEvent 
-| union SigninLogs  
-| summarize count() 
+SecurityEvent 
+| union SigninLogs  
+| summarize count() 
 ```
 
-
 ```KQL
-SecurityEvent 
+SecurityEvent 
 | union (SigninLogs | summarize count() | project count_)
 ```
-
 
 ```KQL
 union Security* 
 | summarize count() by Type
 ```
 
+The following statement demonstrates the join operator:
 
 ```KQL
 SecurityEvent 
@@ -252,11 +258,13 @@ SecurityEvent
 ) on Account
 ```
 
+The following statement demonstrates the extract function():
 
 ```KQL
 print extract("x=([0-9.]+)", 1, "hello x=45.6|wo") == "45.6"
 ```
 
+The following statements use the extend function:
 
 ```KQL
 SecurityEvent
@@ -267,6 +275,7 @@ SecurityEvent
 | where LoginCount < 10
 ```
 
+The following statement demonstrates the parse operator:
 
 ```KQL
 let Traces = datatable(EventText:string)
@@ -282,22 +291,25 @@ Traces
 | project resourceName, totalSlices, sliceNumber, lockTime, releaseTime, previousLockTime
 ```
 
+The following statement demonstrates working with dynamic fields:
 
 ```KQL
 SigninLogs 
 | extend OS = DeviceDetail.operatingSystem
 ```
 
+The following example shows how to break out packed fields:
 
 ```KQL
-SigninLogs 
-| extend OS = DeviceDetail.operatingSystem, Browser = DeviceDetail.browser
-| extend StatusCode = tostring(Status.errorCode), StatusDetails = tostring(Status.additionalDetails)
-| extend Date = startofday(TimeGenerated)
-| summarize count() by Date, Identity, UserDisplayName, UserPrincipalName, IPAddress, ResultType, ResultDescription, StatusCode, StatusDetails, ConditionalAccessPol0Name, ConditionalAccessPol0Result, ConditionalAccessPol1Name, ConditionalAccessPol1Result, ConditionalAccessPol2Name, ConditionalAccessPol2Result, Location, State, City
-| sort by Date
+SigninLogs 
+| extend OS = DeviceDetail.operatingSystem, Browser = DeviceDetail.browser
+| extend StatusCode = tostring(Status.errorCode), StatusDetails = tostring(Status.additionalDetails)
+| extend Date = startofday(TimeGenerated)
+| summarize count() by Date, Identity, UserDisplayName, UserPrincipalName, IPAddress, ResultType, ResultDescription, StatusCode, StatusDetails, ConditionalAccessPol0Name, ConditionalAccessPol0Result, ConditionalAccessPol1Name, ConditionalAccessPol1Result, ConditionalAccessPol2Name, ConditionalAccessPol2Result, Location, State, City
+| sort by Date
 ```
 
+The following statement demonstrates operators to manipulate JSON stored in string fields:
 
 ```KQL
  SigninLogs
@@ -306,14 +318,14 @@ SigninLogs
 | extend AuthResult = AuthDetails[0].["authenticationStepResultDetail"] 
 | project AuthMethod, AuthResult, AuthDetails
 ```
-
+The mv-expand operator expands multi-value dynamic arrays or property bags into multiple records:
 
 ```KQL
  SigninLogs
 | mv-expand AuthDetails = todynamic(AuthenticationDetails)
 | project AuthDetails
 ```
-
+The mv-apply operator applies a subquery to each record and returns the union of the results of all subqueries:
 
 ```KQL
 SigninLogs
@@ -321,10 +333,9 @@ SigninLogs
 (where AuthDetails.authenticationMethod == "Password")
 ```
 
-
+To create a function:
 
 ```KQL
 PrivLogins
 ```
-
 
