@@ -1,0 +1,5 @@
+//Looking for image files in emails
+
+let image_extensions = dynamic(["jpg", "jpeg", "png", "bmp", "gif"]);  
+EmailAttachmentInfo
+| where FileType in (image_extensions)
