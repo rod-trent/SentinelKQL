@@ -1,0 +1,22 @@
+//Reporting on Multiple tables that are not ingesting data.
+//Replace the tables with the tables you want to monitor.
+//Want to add more tables? Just copy, paste, and modify the let block to your heart's content.
+
+let table1= OfficeActivity
+| where isnotempty(Type)
+| summarize maxTimeGenerated=max(TimeGenerated) by Type
+| where maxTimeGenerated  < ago(48h);
+let table2= SecurityAlert
+| where isnotempty(Type)
+| summarize maxTimeGenerated=max(TimeGenerated) by Type
+| where maxTimeGenerated  < ago(72h);
+let table3= DeviceInfo
+| where isnotempty(Type)
+| summarize maxTimeGenerated=max(TimeGenerated) by Type
+| where maxTimeGenerated  < ago(72h);
+let table4= SigninLogs
+| where isnotempty(Type)
+| summarize maxTimeGenerated=max(TimeGenerated) by Type
+| where maxTimeGenerated  < ago(14d);
+union isfuzzy=true 
+table1,table2,table3,table4
