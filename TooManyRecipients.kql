@@ -1,0 +1,5 @@
+//Identify emails sent to more than 100 recipients
+
+EmailEvents
+| where array_length(split(RecipientEmailAddress, ",")) > 100
+| project Timestamp, NetworkMessageId, SenderMailFromAddress, RecipientEmailAddress, Subject
