@@ -1,4 +1,4 @@
-//Using KQL to creating a URL to an Incident
+//Using KQL's strcat to create a URL to an Incident on another domain
 
 
 let new_URL = "domain.com";
