@@ -1,0 +1,9 @@
+Using KQL Strcat
+
+let new_URL = "domain.com";
+SecurityIncident
+| where TimeGenerated >= ago(90d)
+| where Severity == 'High'
+| where Title has "Suspicious"
+| extend Updated_URL = strcat("https://portal.azure.com/", new_URL, "/", IncidentName)
+| project Updated_URL
