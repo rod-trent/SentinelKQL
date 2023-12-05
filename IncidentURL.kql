@@ -1,0 +1,15 @@
+//Using KQL to creating a URL to an Incident
+
+
+let new_URL = "domain.com";
+let portal_URL = "https://portal.azure.com/";
+let subscription = "your_subscription";
+let resource_group = "your_resource_group";
+let workspace = "your_workspace";
+SecurityIncident
+| where TimeGenerated >= ago(90d)
+| where Severity == 'High'
+| where Title has "Suspicious"
+| extend Updated_URL = strcat(portal_URL, new_URL, "/", "#asset/Microsoft_Azure_Security_Insights/Incident/subscriptions/", subscription, "/", "resourceGroups/", resource_group, "/", "providers/Microsoft.OperationalInsights/workspaces/", workspace, "/", "providers/Microsoft.SecurityInsights/Incidents/", IncidentName)
+| project Updated_URL
+
