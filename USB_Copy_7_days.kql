@@ -1,0 +1,5 @@
+DeviceFileEvents
+| where ActionType in ("FileCreated", "FileModified")
+| where FolderPath startswith "D:\\"
+| where Timestamp > ago(7d)
+| project Timestamp, DeviceId, DeviceName, FileName, FolderPath
