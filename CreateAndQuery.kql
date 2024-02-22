@@ -1,0 +1,13 @@
+//Create a table, query the table
+
+let MyTable = datatable (Category:string, Value:long) 
+[ 
+    "A", 1, 
+    "A", 3, 
+    "A", 5, 
+    "B", 1, 
+    "B", 2 
+]; 
+MyTable 
+| extend PackedRecord = pack_all() 
+| summarize Result = make_list(PackedRecord)
