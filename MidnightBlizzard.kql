@@ -1,0 +1,13 @@
+//Checking for Midnight Blizzard impact in environment
+
+union
+(
+    BehaviorEntities
+    | where ThreatFamily contains "Midnight Blizzard"
+    | project Timestamp, BehaviorId, ActionType, Categories, ServiceSource, DetectionSource, DataSources, EntityType, EntityRole, DetailedEntityRole
+),
+(
+    AlertEvidence
+    | where ThreatFamily contains "Midnight Blizzard"
+    | project Timestamp, AlertId, Title, Categories, AttackTechniques, ServiceSource, DetectionSource, EntityType, EvidenceRole, EvidenceDirection, Severity
+)
