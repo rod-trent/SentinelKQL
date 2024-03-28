@@ -1,0 +1,4 @@
+// Identifies when an item was deleted from any Watchlist
+
+Watchlist
+| where _DTItemStatus == "Delete"
