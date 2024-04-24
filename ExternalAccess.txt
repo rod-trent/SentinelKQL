@@ -4,4 +4,4 @@
 //You can also do this (IP-API query) with a Playbook to add additional context to an Incident in the comments
 //See: https://secureinfra.blog/2020/09/03/how-to-add-geographical-data-for-ip-addresses-to-an-azure-sentinel-incident/
 
-externaldata(status:string, country:string, region:string, regionName:string, city:string)[@"http://ip-api.com/json/174.98.173.42"] with(format="json")
+externaldata(status:string, country:string, countryCode:string, region:string, regionName:string, city:string, zip:string, lat:string, lon:string, timezone:string, isp:string, org:string, as:string)[@"http://ip-api.com/json/174.98.173.42"] with(format="json")
