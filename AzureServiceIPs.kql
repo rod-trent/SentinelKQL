@@ -1,9 +1,39 @@
-//Parse and query the Azure Public IP JSON file using the externaldata operator
-//This is example is for the Public Cloud JSON. The files are curated and updated once a week, so the URL will need to be updated often.
-//All of the available links to the various Azure services JSON files are located here: https://learn.microsoft.com/en-us/azure/virtual-network/service-tags-overview#discover-service-tags-by-using-downloadable-json-files
-
-let AzurePublicIPs = externaldata(changeNumber: string, cloud: string, values: string, name: string, id: string, properties: string, changenumber2: string, region: string, regionId: string, platform: string, systemService: string, addressPrefixes: string, networkFeatures: string)
-    [@"https://download.microsoft.com/download/7/1/D/71D86715-5596-4529-9B13-DA13A5DE5B63/ServiceTags_Public_20240422.json"]
-    with (format="MultiJSON", ingestionMapping='[{"Column":"name","Properties":{"Path":"$.changeNumber"}},{"Column":"cloud","Properties":{"Path":"$.cloud"}},{"Column":"values","Properties":{"Path":"$.values"}},{"Column":"name","Properties":{"Path":"$.values.name"}},{"Column":"id","Properties":{"Path":"$.values.id"}},{"Column":"properties","Properties":{"Path":"$.values.properties"}},{"Column":"changenumber2","Properties":{"Path":"$.values.properties.changeNumber"}},{"Column":"region","Properties":{"Path":"$.values.properties.region"}},{"Column":"regionId","Properties":{"Path":"$.values.properties.regionId"}},{"Column":"platform","Properties":{"Path":"$.values.properties.platform"}},{"Column":"systemService","Properties":{"Path":"$.values.properties.systemService"}},{"Column":"addressPrefixes","Properties":{"Path":"$.values.properties.addressPrefixes"}},{"Column":"networkFeatures","Properties":{"Path":"$.values.properties.networkFeatures"}}]');
+let AzurePublicIPs = externaldata(
+    changeNumber: string,
+    cloud: string,
+    values: dynamic, // 'values' should be of type dynamic to hold JSON objects
+    name: string,
+    id: string,
+    properties: dynamic, // 'properties' should also be dynamic if it contains nested JSON
+    changenumber2: string,
+    region: string,
+    regionId: string,
+    platform: string,
+    systemService: string,
+    addressPrefixes: dynamic, // 'addressPrefixes' should be of type dynamic if it's an array
+    networkFeatures: dynamic) // 'networkFeatures' should be of type dynamic if it's an array or nested JSON
+[@"https://download.microsoft.com/download/7/1/D/71D86715-5596-4529-9B13-DA13A5DE5B63/ServiceTags_Public_20240422.json"] with (format="MultiJSON", ingestionMapping='[{"Column":"changeNumber","Properties":{"Path":"$.changeNumber"}},{"Column":"cloud","Properties":{"Path":"$.cloud"}},{"Column":"values","Properties":{"Path":"$.values"}},{"Column":"name","Properties":{"Path":"$.values.name"}},{"Column":"id","Properties":{"Path":"$.values.id"}},{"Column":"properties","Properties":{"Path":"$.values.properties"}},{"Column":"changenumber2","Properties":{"Path":"$.values.properties.changeNumber"}},{"Column":"region","Properties":{"Path":"$.values.properties.region"}},{"Column":"regionId","Properties":{"Path":"$.values.properties.regionId"}},{"Column":"platform","Properties":{"Path":"$.values.properties.platform"}},{"Column":"systemService","Properties":{"Path":"$.values.properties.systemService"}},{"Column":"addressPrefixes","Properties":{"Path":"$.values.properties.addressPrefixes"}},{"Column":"networkFeatures","Properties":{"Path":"$.values.properties.networkFeatures"}}]'); // Ensure this line ends with a single quote
 AzurePublicIPs
-| project cloud, name, region, platform, addressPrefixes, networkFeatures
+| mv-expand values to typeof(dynamic)
+| extend
+    valueName = values.name,
+    valueId = values.id,
+    valueChangeNumber = values.properties.changeNumber,
+    valueRegion = values.properties.region,
+    valueRegionId = values.properties.regionId,
+    valuePlatform = values.properties.platform,
+    valueSystemService = values.properties.systemService,
+    valueAddressPrefixes = values.properties.addressPrefixes,
+    valueNetworkFeatures = values.properties.networkFeatures
+| project
+    cloud,
+    changeNumber,
+    valueName,
+    valueId,
+    valueChangeNumber,
+    valueRegion,
+    valueRegionId,
+    valuePlatform,
+    valueSystemService,
+    valueAddressPrefixes,
+    valueNetworkFeatures
