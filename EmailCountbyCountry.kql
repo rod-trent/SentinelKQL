@@ -1,0 +1,6 @@
+//Count of emails by country
+
+EmailEvents
+| extend GeoInformation = parse_json(geo_info_from_ip_address(SenderIPv4))
+| extend NwMsgId_Recipient = strcat(NetworkMessageId, "_", RecipientEmailAddress)
+| summarize dcount(NwMsgId_Recipient) by tostring(GeoInformation.country)
