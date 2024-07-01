@@ -1,0 +1,9 @@
+//Identify any increase in activity for a given date range
+//This query will pull data from various logs such as AADNonInteractiveUserSignInLogs, PowerBIActivity, AWSGuardDuty, ThreatIntelligenceIndicator, CloudAppEvents, BehaviorAnalytics, Dynamics365Activity, AzureActivity, DeviceEvents, DeviceLogonEvents, Anomalies, AppTraces, AADUserRiskEvents, and IdentityInfo. It will then filter the data based on the time generated between the start and end dates (in this case, from July 1st to July 5th, 2024). The query will then summarize the count of events by day.
+
+let startDate = datetime(2024-07-01);
+let endDate = datetime(2024-07-05);
+union AADNonInteractiveUserSignInLogs, PowerBIActivity, AWSGuardDuty, ThreatIntelligenceIndicator, CloudAppEvents, BehaviorAnalytics, Dynamics365Activity, AzureActivity, DeviceEvents, DeviceLogonEvents, Anomalies, AppTraces, AADUserRiskEvents, IdentityInfo
+| where TimeGenerated between (startDate .. endDate)
+| summarize count() by bin(TimeGenerated, 1d)
+| render timechart
