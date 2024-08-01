@@ -1,0 +1,21 @@
+//This a list of locating Copilot usage in the SecurityEvent table.
+
+//Copilot in Microsoft Edge
+SecurityEvent
+| where CommandLine has "ux=copilot"
+| where Process == "msedge.exe"
+
+//Copilot in Excel
+SecurityEvent
+| where CommandLine has "copilot"
+| where NewProcessName has "EXCEL.EXE"
+
+//Copilot in PowerPoint
+SecurityEvent
+| where CommandLine has "copilot"
+| where NewProcessName has "POWERPNT.EXE"
+
+//Copilot in Visual Studio
+SecurityEvent
+| where CommandLine has "copilot"
+| where NewProcessName has "vsce-sign.exe"
