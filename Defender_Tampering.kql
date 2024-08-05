@@ -1,0 +1,9 @@
+//Hunt for tampering attempts
+
+DeviceRegistryEvents 
+| where Timestamp >= ago(7d) 
+| where RegistryKey == "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows Defender" 
+| where RegistryValueName == "DisableAntiSpyware" 
+| where RegistryValueType == "Dword" 
+| where RegistryValueData == 1 
+| where IsInitiatingProcessRemoteSession == true 
