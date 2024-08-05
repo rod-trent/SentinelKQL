@@ -1,4 +1,4 @@
-//Hunt for tampering attempts
+//Hunt for Defender tampering attempts
 
 DeviceRegistryEvents 
 | where Timestamp >= ago(7d) 
