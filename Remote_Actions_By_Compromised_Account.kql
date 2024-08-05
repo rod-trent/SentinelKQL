@@ -1,0 +1,7 @@
+//Highlight actions performed remotely by a compromised account. 
+
+DeviceProcessEvents 
+| where Timestamp >= ago(7d) 
+| where InitiatingProcessAccountSid == "SID" // Insert the compromised account SID here 
+| where IsInitiatingProcessRemoteSession == "True" 
+| project InitiatingProcessFileName, InitiatingProcessAccountSid, InitiatingProcessCommandLine, FileName, ProcessCommandLine 
