@@ -1,0 +1,7 @@
+//Shows Sentinel use cases count by MITRE tactics.
+
+Anomalies
+| extend tactics = split(Tactics, ",")
+| mv-expand tactics
+| summarize UseCasesCount = count() by tostring(tactics)
+| order by UseCasesCount desc
