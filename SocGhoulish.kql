@@ -1,0 +1,10 @@
+//Detects SocGhoulish which does the following: 
+//1. browsers spawning the Windows Scripting Host (wscript.exe) process
+//2. running the whoami command and redirecting the output to a file
+//3. domain trust discovery checks with nltest and related commands
+
+DeviceProcessEvents
+| where InitiatingProcessFileName in~ ("chrome.exe", "firefox.exe", "iexplore.exe", "edge.exe") and InitiatingProcessCommandLine has "wscript.exe"
+or InitiatingProcessCommandLine has "whoami" and InitiatingProcessCommandLine has ">"
+or InitiatingProcessCommandLine has "nltest"
+| project TimeGenerated, DeviceName, InitiatingProcessFileName, InitiatingProcessCommandLine
