@@ -1,0 +1,9 @@
+//Logging into a website/interactive login
+
+SigninLogs
+| where IsInteractive == 1
+| extend City = LocationDetails.city
+| extend State = LocationDetails.state
+| extend Lat = parse_json(tostring(LocationDetails.geoCoordinates)).latitude
+| extend Long = parse_json(tostring(LocationDetails.geoCoordinates)).longitude
+| project UserPrincipalName, UserType, AppDisplayName, ResourceDisplayName, City, State, Location, Lat, Long
