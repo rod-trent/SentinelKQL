@@ -2,6 +2,11 @@
 //Defender for Endpoint is required for the DeviceNetworkInfo table.
 
 DeviceNetworkInfo
-| where isnotempty(IPv4Dhcp)
-| distinct IPv4Dhcp, MacAddress, NetworkAdapterName, DeviceName
-| summarize Count=count() by IPv4Dhcp, MacAddress, NetworkAdapterName, DeviceName
+| where isnotempty(IPv4Dhcp) and isnotempty(MacAddress)
+| summarize 
+    DistinctIPs = make_set(IPv4Dhcp), 
+    DistinctDevices = make_set(DeviceName), 
+    IPCount = dcount(IPv4Dhcp), 
+    DeviceCount = dcount(DeviceName) 
+    by MacAddress
+| where IPCount > 1 and DeviceCount > 1
